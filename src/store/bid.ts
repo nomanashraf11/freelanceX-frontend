@@ -16,6 +16,15 @@ export const useBidsStore = defineStore("bids", {
         throw error;
       }
     },
+    async fetchBidsByFreelancer(userId: string) {
+      try {
+        const response = await getAPI<Bid[]>(`/bid/freelancer/${userId}`);
+        this.bids = response.data;
+      } catch (error) {
+        this.bids = [];
+        throw error;
+      }
+    },
     async createBid(bid: BidCreate) {
       try {
         await postAPI("/bid/freelancer", bid);
