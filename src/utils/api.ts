@@ -11,7 +11,7 @@ const api = axios.create({
 });
 
 interface ApiOptions {
-  is_auth_required?: boolean;
+  isAuthRequired?: boolean;
 }
 
 const getAuthHeader = (): { Authorization: string } | {} => {
@@ -21,11 +21,11 @@ const getAuthHeader = (): { Authorization: string } | {} => {
 
 export async function getAPI<T>(
   endpoint: string,
-  options: ApiOptions = { is_auth_required: true }
+  options: ApiOptions = { isAuthRequired: true }
 ): Promise<AxiosResponse<T>> {
   try {
     return await api.get<T>(endpoint, {
-      headers: options.is_auth_required ? getAuthHeader() : {},
+      headers: options.isAuthRequired ? getAuthHeader() : {},
     });
   } catch (error) {
     throw error;
@@ -35,11 +35,11 @@ export async function getAPI<T>(
 export async function postAPI<T>(
   endpoint: string,
   data: unknown,
-  options: ApiOptions = { is_auth_required: true }
+  options: ApiOptions = { isAuthRequired: true }
 ): Promise<AxiosResponse<T>> {
   try {
     return await api.post<T>(endpoint, data, {
-      headers: options.is_auth_required ? getAuthHeader() : {},
+      headers: options.isAuthRequired ? getAuthHeader() : {},
     });
   } catch (error) {
     throw error;
@@ -49,11 +49,11 @@ export async function postAPI<T>(
 export async function putAPI<T>(
   endpoint: string,
   data: unknown,
-  options: ApiOptions = { is_auth_required: true }
+  options: ApiOptions = { isAuthRequired: true }
 ): Promise<AxiosResponse<T>> {
   try {
     return await api.put<T>(endpoint, data, {
-      headers: options.is_auth_required ? getAuthHeader() : {},
+      headers: options.isAuthRequired ? getAuthHeader() : {},
     });
   } catch (error) {
     throw error;
@@ -63,11 +63,11 @@ export async function putAPI<T>(
 export async function patchAPI<T>(
   endpoint: string,
   data: unknown,
-  options: ApiOptions = { is_auth_required: true }
+  options: ApiOptions = { isAuthRequired: true }
 ): Promise<AxiosResponse<T>> {
   try {
     return await api.patch<T>(endpoint, data, {
-      headers: options.is_auth_required ? getAuthHeader() : {},
+      headers: options.isAuthRequired ? getAuthHeader() : {},
     });
   } catch (error) {
     throw error;

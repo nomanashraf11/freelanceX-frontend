@@ -22,13 +22,13 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useAuthStore } from '../store/auth'
 import NotificationOverlay from './NotificationOverlay.vue'
+import { useUserStore } from '../store/user'
 
 const showNotifications = ref(false)
-const authStore = useAuthStore()
+const userStore = useUserStore()
 
 const logout = () => {
-  authStore.logout()
+  userStore.logout()
 }
 </script>
