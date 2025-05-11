@@ -21,9 +21,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   if (to.meta.requiresAuth) {
     try {
-      const response = await fetch('/api/user/profile', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      })
+      const response = get
       if (response.status === 401) {
         next('/login')
       } else {

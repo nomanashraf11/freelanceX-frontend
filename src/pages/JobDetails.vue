@@ -14,10 +14,8 @@
 </template>
 
 <script setup lang="ts">
-import DefaultLayout from '../layouts/DefaultLayout.vue'
 import { useRoute } from 'vue-router'
 
-// Mock job data
 const route = useRoute()
 const job = {
   id: route.params.id,

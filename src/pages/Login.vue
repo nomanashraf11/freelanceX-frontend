@@ -19,22 +19,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useUserStore } from '../store/user'
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "../store/auth";
 
-const email = ref('')
-const password = ref('')
-const router = useRouter()
-const userStore = useUserStore()
+const email = ref("");
+const password = ref("");
+const router = useRouter();
+const authStore = useAuthStore();
 
 const login = async () => {
   try {
-    localStorage.setItem('token', 'dummy-token')
-    await userStore.fetchUser()
-    router.push('/')
+    await authStore.login(email.value, password.value);
+    router.push("/");
   } catch (error) {
-    console.error('Login failed')
+    console.error(`Login failed: ${error}`);
   }
-}
+};
 </script>

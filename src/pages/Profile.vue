@@ -4,8 +4,11 @@
       <h1>Profile</h1>
       <v-card>
         <v-card-text>
-          <p>Username: {{ user?.username }}</p>
+          <p>FirstName: {{ user?.firstName }}</p>
+          <p>LastName: {{ user?.lastName }}</p>
           <p>Email: {{ user?.email }}</p>
+          <p>Role: {{ user?.role.toString() }}</p>
+          <p>Bio: {{ user?.bio }}</p>
         </v-card-text>
       </v-card>
     </v-container>
@@ -13,9 +16,9 @@
 </template>
 
 <script setup lang="ts">
-import DefaultLayout from '../layouts/DefaultLayout.vue'
-import { useUserStore } from '../store/user'
+import DefaultLayout from "../layouts/DefaultLayout.vue";
+import { useUserStore } from "../store/user";
 
-const userStore = useUserStore()
-const user = userStore.user
+const userStore = useUserStore();
+const user = userStore.user;
 </script>
