@@ -46,7 +46,6 @@
                 <input
                   id="bidAmount"
                   v-model.number="bidAmount"
-                  :rules="[rules.required, rules.positive, rules.minBid]"
                   required
                   type="number"
                   step="0.01"
@@ -54,7 +53,7 @@
                   placeholder="Enter your bid amount"
                 />
               </div>
-              <span v-if="!bidValid && bidAmount && (!rules.positive(bidAmount) || !rules.minBid(bidAmount))" class="text-red-600 text-xs mt-1">
+              <span v-if="bidAmount && (!rules.positive(bidAmount) || !rules.minBid(bidAmount))" class="text-red-600 text-xs mt-1">
                 {{ rules.positive(bidAmount) || rules.minBid(bidAmount) }}
               </span>
             </div>
@@ -63,13 +62,12 @@
               <textarea
                 id="bidProposal"
                 v-model="bidProposal"
-                :rules="[rules.required, rules.maxProposalLength]"
                 required
                 rows="4"
                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-300"
                 placeholder="Describe your proposal..."
               ></textarea>
-              <span v-if="!bidValid && bidProposal && !rules.maxProposalLength(bidProposal)" class="text-red-600 text-xs mt-1">
+              <span v-if="bidProposal && !rules.maxProposalLength(bidProposal)" class="text-red-600 text-xs mt-1">
                 {{ rules.maxProposalLength(bidProposal) }}
               </span>
             </div>
@@ -167,8 +165,6 @@ const bidsLoading = ref(false);
 const bidLoading = ref(false);
 const error = ref<string | null>(null);
 const bidError = ref<string | null>(null);
-const bidForm = ref();
-const bidValid = ref(false);
 const bidAmount = ref<number>(0);
 const bidProposal = ref<string>("");
 const successSnackbar = ref(false);
@@ -181,6 +177,17 @@ const rules = {
   minBid: (value: number) => value >= 0.1 || "Minimum bid is $0.10",
   maxProposalLength: (value: string) => value.length <= 1000 || "Maximum 1000 characters",
 };
+
+// Compute bid form validity
+const bidValid = computed(() => {
+  return (
+    rules.required(bidAmount.value) === true &&
+    rules.positive(bidAmount.value) === true &&
+    rules.minBid(bidAmount.value) === true &&
+    rules.required(bidProposal.value) === true &&
+    rules.maxProposalLength(bidProposal.value) === true
+  );
+});
 
 const formatDate = (date: Date | string | undefined) => {
   if (!date) {
@@ -241,7 +248,6 @@ const placeBid = async () => {
     await bidsStore.createBid(bidData);
     bidAmount.value = 0;
     bidProposal.value = "";
-    bidForm.value?.resetValidation?.();
     successSnackbar.value = true;
     setTimeout(() => (successSnackbar.value = false), 3000);
   } catch (err) {
