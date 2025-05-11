@@ -18,11 +18,11 @@
         <tbody>
           <tr v-for="user in usersStore.users" :key="user.userId">
             <td>{{ user.userId }}</td>
-            <td>{{ user.firstName }}</td>
-            <td>{{ user.lastName }}</td>
+            <td>{{ user.profile.firstName }}</td>
+            <td>{{ user.profile.lastName }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.role }}</td>
-            <td>{{ user.bio || "N/A" }}</td>
+            <td>{{ user.profile.bio || "N/A" }}</td>
           </tr>
         </tbody>
       </v-table>

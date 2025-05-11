@@ -33,8 +33,6 @@ export const useUserStore = defineStore("user", {
         await postAPI<{ token: string }>("/auth/register", user, {
           isAuthRequired: false,
         });
-
-        return { success: true };
       } catch (error) {
         console.error("Registration failed:", error);
       }

@@ -7,3 +7,11 @@ export interface Job {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface JobCreate {
+  clientId: string;
+  title: string;
+  description: string;
+  budget: number;
+  location: string;
+}

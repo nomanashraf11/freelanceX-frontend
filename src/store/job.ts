@@ -1,10 +1,11 @@
 import { defineStore } from "pinia";
-import type { Job } from "../types/job";
+import type { Job, JobCreate } from "../types/job";
 import { getAPI, postAPI } from "../utils/api";
 
 export const useJobsStore = defineStore("jobs", {
   state: () => ({
     jobs: [] as Job[],
+    job: null as Job | null,
   }),
   actions: {
     async fetchJobs() {
@@ -16,9 +17,18 @@ export const useJobsStore = defineStore("jobs", {
         throw error;
       }
     },
-    async createJob(title: string, description: string) {
+    async fetchJob(jobId: string) {
       try {
-        await postAPI("/job/client", { title, description });
+        const response = await getAPI<Job>(`/job/${jobId}`);
+        this.job = response.data;
+      } catch (error) {
+        this.job = null;
+        throw error;
+      }
+    },
+    async createJob(job: JobCreate) {
+      try {
+        await postAPI("/job/client", job);
       } catch (error) {
         throw error;
       }

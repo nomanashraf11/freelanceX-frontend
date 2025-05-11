@@ -37,7 +37,7 @@ router.beforeEach(async (to, from, next) => {
         });
         return;
       }
-
+      
       if (to.meta.requiresAdmin && userStore.user?.role !== "ADMIN") {
         next("/");
         return;
@@ -52,6 +52,11 @@ router.beforeEach(async (to, from, next) => {
       });
     }
   } else {
+    // Prevent logged-in users from accessing login/register
+    if (userStore.isAuthenticated && (to.path === "/login" || to.path === "/register")) {
+      next("/");
+      return;
+    }
     next();
   }
 });

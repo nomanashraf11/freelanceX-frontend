@@ -1,25 +1,41 @@
 <template>
-  <v-container>
-    <v-row justify="center">
-      <v-col cols="12" sm="6">
+  <v-container fluid class="d-flex justify-center align-center" style="height: 100vh">
+    <v-row justify="center" align="center" class="w-100">
+      <v-col cols="12" sm="4">
         <v-card>
-          <v-card-title>Login</v-card-title>
+          <v-card-title class="text-h6">Login</v-card-title>
           <v-card-text>
-            <v-alert v-if="error" type="error" class="mb-4">{{ error }}</v-alert>
+            <v-alert v-if="error" type="error" class="mb-4" density="compact">{{ error }}</v-alert>
+
             <v-form ref="form" v-model="valid" @submit.prevent="login">
-              <v-text-field label="Email" v-model="email" :rules="[rules.required, rules.email]" required />
+              <v-text-field
+                label="Email"
+                v-model="email"
+                :rules="[rules.required, rules.email]"
+                required
+                density="compact"
+              />
               <v-text-field
                 label="Password"
                 type="password"
                 v-model="password"
                 :rules="[rules.required, rules.minLength]"
                 required
+                density="compact"
               />
-              <v-card-actions>
-                <v-btn :disabled="!valid || loading" color="primary" type="submit" :loading="loading">
+
+              <v-card-actions class="justify-space-between">
+                <v-btn
+                  :disabled="!valid || loading"
+                  variant="outlined"
+                  type="submit"
+                  :loading="loading"
+                  density="comfortable"
+                  class="mr-2"
+                >
                   Login
                 </v-btn>
-                <v-btn to="/register" :disabled="loading">Register</v-btn>
+                <v-btn to="/register" :disabled="loading" density="comfortable"> Register </v-btn>
               </v-card-actions>
             </v-form>
           </v-card-text>
@@ -31,11 +47,10 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter} from "vue-router";
 import { useUserStore } from "../store/user";
 
 const router = useRouter();
-const route = useRoute();
 const userStore = useUserStore();
 const form = ref();
 const valid = ref(false);
@@ -60,8 +75,7 @@ const login = async () => {
   error.value = null;
   try {
     await userStore.login(email.value, password.value);
-    const redirect = (route.query.redirect as string) || "/";
-    router.push(redirect);
+    router.push("/");
   } catch (err) {
     error.value = "Login failed. Please check your credentials and try again.";
     console.error("Login failed:", err);

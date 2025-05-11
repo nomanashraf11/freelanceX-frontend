@@ -78,12 +78,13 @@ const register = async () => {
     const user: RegisterUser = {
       firstName: firstName.value,
       lastName: lastName.value,
+      password: password.value,
       email: email.value,
       role: role.value,
       bio: bio.value,
     };
     await userStore.register(user);
-    router.push("/");
+    router.push("/login");
   } catch (err) {
     error.value = "Registration failed. Please check your details and try again.";
     console.error("Registration failed:", err);
