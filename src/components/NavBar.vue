@@ -1,13 +1,19 @@
 <template>
   <header class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
-    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+    <nav
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between"
+    >
       <!-- App Title / Dashboard Link -->
-      <div>
+      <div class="flex">
         <button
           @click="goToDashboard"
           class="text-xl font-bold text-gray-900 hover:text-indigo-600 transition duration-300"
         >
-          My App
+          <img
+            src="../assets/logo.svg"
+            alt="FreelanceX Logo"
+            class="h-[60px] w-auto"
+          />
         </button>
       </div>
       <!-- Spacer -->
@@ -19,7 +25,13 @@
           @click="showNotifications = true"
           class="p-2 text-gray-600 hover:text-indigo-600 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300"
         >
-          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg
+            class="h-6 w-6"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -34,7 +46,13 @@
             @click="showMenu = !showMenu"
             class="p-2 text-gray-600 hover:text-indigo-600 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300"
           >
-            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg
+              class="h-6 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -78,10 +96,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useUserStore } from '../store/user';
-import NotificationOverlay from './NotificationOverlay.vue';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useUserStore } from "../store/user";
+import NotificationOverlay from "./NotificationOverlay.vue";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -90,15 +108,15 @@ const showMenu = ref(false);
 
 const goToDashboard = () => {
   showMenu.value = false;
-  router.push('/');
+  router.push("/");
 };
 
 const logout = async () => {
   try {
     await userStore.logout();
-    router.push('/login');
+    router.push("/login");
   } catch (error) {
-    console.error('Logout failed:', error);
+    console.error("Logout failed:", error);
   }
 };
 </script>

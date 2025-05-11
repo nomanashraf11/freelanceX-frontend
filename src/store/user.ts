@@ -17,6 +17,10 @@ export const useUserStore = defineStore("user", {
           { email, password },
           { isAuthRequired: false }
         );
+        console.log(response.status);
+        if (response.status !== 200) {
+          throw new Error(response?.data?.message || "Login failed");
+        }
         this.token = response.data.token;
         localStorage.setItem("token", this.token);
         await this.fetchUser();
@@ -25,6 +29,7 @@ export const useUserStore = defineStore("user", {
         this.isAuthenticated = false;
         localStorage.removeItem("token");
         console.error(error);
+        throw new Error(error?.message || "Login failed");
       }
     },
 
@@ -34,6 +39,7 @@ export const useUserStore = defineStore("user", {
           isAuthRequired: false,
         });
       } catch (error) {
+        throw new Error(error?.message || "Register failed");
         console.error("Registration failed:", error);
       }
     },

@@ -1,8 +1,10 @@
 <template>
   <default-layout>
-    <div class="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8 mt-12">
       <div class="max-w-7xl mx-auto">
-        <h1 class="text-3xl font-extrabold text-gray-900 mb-6">Dashboard</h1>
+        <h1 class="text-3xl font-extrabold text-gray-900 mb-14">
+          Jobs you might like
+        </h1>
         <div
           v-if="error"
           class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md mb-6"
@@ -25,19 +27,37 @@
             fill="none"
             viewBox="0 0 24 24"
           >
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8h8a8 8 0 01-16 0z"></path>
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v8h8a8 8 0 01-16 0z"
+            ></path>
           </svg>
         </div>
-        <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div
+          v-else
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
+        >
           <div
             v-for="job in jobsStore.jobs"
             :key="job.jobId"
             class="bg-white rounded-xl shadow-lg transform transition-all hover:scale-105"
           >
             <div class="p-6">
-              <h2 class="text-lg font-semibold text-gray-900 mb-2">{{ job.title }}</h2>
-              <p class="text-sm text-gray-600 line-clamp-3">{{ job.description }}</p>
+              <h2 class="text-lg font-semibold text-gray-900 mb-2">
+                {{ job.title }}
+              </h2>
+              <p class="text-sm text-gray-600 line-clamp-3">
+                {{ job.description }}
+              </p>
             </div>
             <div class="px-6 pb-6">
               <router-link
@@ -55,7 +75,9 @@
           class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50"
           @click.self="postJobDialog = false"
         >
-          <div class="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl transform transition-all">
+          <div
+            class="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl transform transition-all"
+          >
             <h2 class="text-xl font-bold text-gray-900 mb-4">Post a New Job</h2>
             <div
               v-if="formError"
@@ -66,7 +88,11 @@
             </div>
             <form @submit.prevent="submitJob" class="space-y-4">
               <div>
-                <label for="title" class="block text-sm font-medium text-gray-700">Job Title</label>
+                <label
+                  for="title"
+                  class="block text-sm font-medium text-gray-700"
+                  >Job Title</label
+                >
                 <input
                   id="title"
                   v-model="newJob.title"
@@ -75,12 +101,17 @@
                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-300"
                   placeholder="Enter job title"
                 />
-                <span v-if="newJob.title && !rules.required(newJob.title)" class="text-red-600 text-xs mt-1">
+                <span
+                  v-if="newJob.title && !rules.required(newJob.title)"
+                  class="text-red-600 text-xs mt-1"
+                >
                   {{ rules.required(newJob.title) }}
                 </span>
               </div>
               <div>
-                <label for="description" class="block text-sm font-medium text-gray-700"
+                <label
+                  for="description"
+                  class="block text-sm font-medium text-gray-700"
                   >Job Description</label
                 >
                 <textarea
@@ -92,14 +123,20 @@
                   placeholder="Describe the job..."
                 ></textarea>
                 <span
-                  v-if="newJob.description && !rules.maxLength(newJob.description)"
+                  v-if="
+                    newJob.description && !rules.maxLength(newJob.description)
+                  "
                   class="text-red-600 text-xs mt-1"
                 >
                   {{ rules.maxLength(newJob.description) }}
                 </span>
               </div>
               <div class="relative">
-                <label for="budget" class="block text-sm font-medium text-gray-700">Budget</label>
+                <label
+                  for="budget"
+                  class="block text-sm font-medium text-gray-700"
+                  >Budget</label
+                >
                 <span class="absolute left-3 top-9 text-gray-400">$</span>
                 <input
                   id="budget"
@@ -111,15 +148,24 @@
                 />
                 <span
                   v-if="
-                    newJob.budget && (!rules.positiveNumber(newJob.budget) || !rules.minBudget(newJob.budget))
+                    newJob.budget &&
+                    (!rules.positiveNumber(newJob.budget) ||
+                      !rules.minBudget(newJob.budget))
                   "
                   class="text-red-600 text-xs mt-1"
                 >
-                  {{ rules.positiveNumber(newJob.budget) || rules.minBudget(newJob.budget) }}
+                  {{
+                    rules.positiveNumber(newJob.budget) ||
+                    rules.minBudget(newJob.budget)
+                  }}
                 </span>
               </div>
               <div>
-                <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+                <label
+                  for="location"
+                  class="block text-sm font-medium text-gray-700"
+                  >Location</label
+                >
                 <input
                   id="location"
                   v-model="newJob.location"
@@ -129,7 +175,9 @@
                   placeholder="Enter location"
                 />
                 <span
-                  v-if="newJob.location && !rules.maxLocationLength(newJob.location)"
+                  v-if="
+                    newJob.location && !rules.maxLocationLength(newJob.location)
+                  "
                   class="text-red-600 text-xs mt-1"
                 >
                   {{ rules.maxLocationLength(newJob.location) }}
@@ -149,7 +197,10 @@
                   :disabled="!valid || formLoading"
                   class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition duration-300"
                 >
-                  <span v-if="formLoading" class="absolute left-0 inset-y-0 flex items-center pl-3">
+                  <span
+                    v-if="formLoading"
+                    class="absolute left-0 inset-y-0 flex items-center pl-3"
+                  >
                     <svg
                       class="animate-spin h-5 w-5 text-white"
                       xmlns="http://www.w3.org/2000/svg"
@@ -190,7 +241,12 @@
             viewBox="0 0 24 24"
             stroke="currentColor"
           >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 13l4 4L19 7"
+            />
           </svg>
           <span>Job posted successfully!</span>
         </div>
@@ -233,10 +289,12 @@ const successSnackbar = ref(false);
 
 const rules = {
   required: (value: string | number) => !!value || "This field is required",
-  maxLength: (value: string) => value.length <= 1000 || "Maximum 1000 characters",
+  maxLength: (value: string) =>
+    value.length <= 1000 || "Maximum 1000 characters",
   positiveNumber: (value: number) => value > 0 || "Budget must be positive",
   minBudget: (value: number) => value >= 0.1 || "Minimum budget is $0.10",
-  maxLocationLength: (value: string) => value.length <= 100 || "Maximum 100 characters",
+  maxLocationLength: (value: string) =>
+    value.length <= 100 || "Maximum 100 characters",
 };
 
 // Compute form validity based on all required fields
@@ -285,7 +343,13 @@ const submitJob = async () => {
     };
     await jobsStore.createJob(jobData);
     postJobDialog.value = false;
-    newJob.value = { clientId: "", title: "", description: "", budget: 0, location: "" };
+    newJob.value = {
+      clientId: "",
+      title: "",
+      description: "",
+      budget: 0,
+      location: "",
+    };
     successSnackbar.value = true;
     setTimeout(() => (successSnackbar.value = false), 3000);
   } catch (err) {
