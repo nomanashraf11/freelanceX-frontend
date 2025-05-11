@@ -1,10 +1,10 @@
 <template>
-  <v-app>
+  <div class="min-h-screen flex flex-col">
     <navbar />
-    <v-main>
+    <main class="flex-grow">
       <slot />
-    </v-main>
-  </v-app>
+    </main>
+  </div>
 </template>
 
 <script setup lang="ts">
