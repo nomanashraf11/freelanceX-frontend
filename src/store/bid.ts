@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { Bid } from "../types/bid";
+import type { Bid, BidCreate } from "../types/bid";
 import { getAPI, postAPI } from "../utils/api";
 
 export const useBidsStore = defineStore("bids", {
@@ -16,9 +16,9 @@ export const useBidsStore = defineStore("bids", {
         throw error;
       }
     },
-    async createBid(jobId: string, amount: number) {
+    async createBid(bid: BidCreate) {
       try {
-        await postAPI("/bid/freelancer", { jobId, amount });
+        await postAPI("/bid/freelancer", bid);
       } catch (error) {
         throw error;
       }

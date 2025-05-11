@@ -28,6 +28,15 @@
             required
             dense
             class="mb-2"
+            prefix="$"
+          />
+          <v-textarea
+            label="Proposal"
+            v-model="bidProposal"
+            :rules="[rules.required, rules.maxProposalLength]"
+            required
+            dense
+            class="mb-2"
           />
           <v-btn
             :disabled="!bidValid || bidLoading"
@@ -55,6 +64,7 @@
             <tr>
               <th>Freelancer ID</th>
               <th>Amount</th>
+              <th>Proposal</th>
               <th>Created At</th>
             </tr>
           </thead>
@@ -62,6 +72,7 @@
             <tr v-for="bid in bidsStore.bids" :key="bid.bidId">
               <td>{{ bid.freelancerId }}</td>
               <td>{{ bid.amount }}</td>
+              <td>{{ bid.proposal }}</td>
               <td>{{ formatDate(bid.createdAt) }}</td>
             </tr>
           </tbody>
@@ -84,7 +95,7 @@ import { useUserStore } from "../store/user";
 import { useBidsStore } from "../store/bid";
 import { useJobsStore } from "../store/job";
 import type { Job } from "../types/job";
-import type { Bid } from "../types/bid";
+import type { Bid, BidCreate } from "../types/bid";
 
 const route = useRoute();
 const userStore = useUserStore();
@@ -99,17 +110,19 @@ const bidError = ref<string | null>(null);
 const bidForm = ref();
 const bidValid = ref(false);
 const bidAmount = ref<number>(0);
+const bidProposal = ref<string>("");
 const successSnackbar = ref(false);
 
 const hasBid = computed(() => bidsStore.bids.some((bid: Bid) => bid.freelancerId === userStore.user?.userId));
 
 const rules = {
-  required: (value: number) => !!value || "This field is required",
+  required: (value: number | string) => !!value || "This field is required",
   positive: (value: number) => value > 0 || "Amount must be positive",
-  minBid: (value: number) => value >= 10 || "Minimum bid is 10",
+  minBid: (value: number) => value >= 0.1 || "Minimum bid is $0.10",
+  maxProposalLength: (value: string) => value.length <= 1000 || "Maximum 1000 characters",
 };
 
-const formatDate = (date: Date | undefined) => {
+const formatDate = (date: Date | string | undefined) => {
   if (!date) {
     return new Date().toLocaleDateString();
   }
@@ -121,14 +134,10 @@ onMounted(async () => {
   loading.value = true;
   error.value = null;
   try {
-    // Fetch job details
     await jobsStore.fetchJob(jobId);
-    job.value = jobsStore.jobs.find((j) => j.jobId === jobId) || null;
+    job.value = jobsStore.job;
 
-    if (
-      (job.value && userStore.user?.role === "CLIENT" && job.value.clientId === userStore.user?.userId) ||
-      userStore.user?.role === "FREELANCER"
-    ) {
+    if (job.value && userStore.user?.role === "CLIENT" && job.value.clientId === userStore.user?.userId) {
       bidsLoading.value = true;
       try {
         await bidsStore.fetchBids(jobId);
@@ -137,6 +146,13 @@ onMounted(async () => {
         console.error("Failed to fetch bids:", err);
       } finally {
         bidsLoading.value = false;
+      }
+    } else if (userStore.user?.role === "FREELANCER") {
+      // Fetch bids to check if the freelancer has already bid
+      try {
+        await bidsStore.fetchBids(jobId);
+      } catch (err) {
+        console.error("Failed to fetch bids for freelancer:", err);
       }
     }
   } catch (err) {
@@ -149,15 +165,25 @@ onMounted(async () => {
 
 const placeBid = async () => {
   if (!bidValid.value) return;
+  if (!userStore.user?.userId) {
+    bidError.value = "User not authenticated.";
+    return;
+  }
   bidLoading.value = true;
   bidError.value = null;
   try {
-    await bidsStore.createBid(route.params.id as string, bidAmount.value);
+    const bidData: BidCreate = {
+      jobId: route.params.id as string,
+      freelancerId: userStore.user.userId,
+      amount: bidAmount.value,
+      proposal: bidProposal.value,
+    };
+
+    await bidsStore.createBid(bidData);
     bidAmount.value = 0;
-    bidForm.value.reset();
+    bidProposal.value = "";
+    bidForm.value.resetValidation();
     successSnackbar.value = true;
-    // Refresh bids to update hasBid
-    await bidsStore.fetchBids(route.params.id as string);
   } catch (err) {
     bidError.value = "Failed to place bid. Please try again.";
     console.error("Failed to place bid:", err);
@@ -171,7 +197,8 @@ const placeBid = async () => {
 .compact-form {
   padding: 16px !important;
 }
-.compact-form .v-text-field {
+.compact-form .v-text-field,
+.compact-form .v-textarea {
   font-size: 0.9rem;
 }
 .compact-form .v-btn {

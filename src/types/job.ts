@@ -4,6 +4,7 @@ export interface Job {
   location: string;
   description: string;
   clientId: string;
+  status: "OPEN" | "CLOSED";
   createdAt: Date;
   updatedAt: Date;
 }
@@ -14,4 +15,5 @@ export interface JobCreate {
   description: string;
   budget: number;
   location: string;
+  status: "OPEN" | "CLOSED";
 }

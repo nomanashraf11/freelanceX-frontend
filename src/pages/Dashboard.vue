@@ -157,6 +157,7 @@ const submitJob = async () => {
       description: newJob.value.description,
       budget: newJob.value.budget,
       location: newJob.value.location,
+      status: "OPEN"
     };
     await jobsStore.createJob(jobData);
     postJobDialog.value = false;
