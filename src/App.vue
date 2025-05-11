@@ -1,8 +1,14 @@
 <template>
-  <div class="min-h-screen">
-    <router-view />
-  </div>
+  <router-view />
 </template>
 
-<script setup lang="ts">
+<script setup>
+import { onMounted } from "vue";
+import { useAuthStore } from "../src/stores/auth";
+
+const authStore = useAuthStore();
+
+onMounted(() => {
+  authStore.initialize();
+});
 </script>
