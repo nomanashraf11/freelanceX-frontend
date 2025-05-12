@@ -4,7 +4,7 @@ export interface ContractCreate {
   terms: string;
 }
 
-interface Contract {
+export interface Contract {
   contractId: string;
   bidId: string;
   jobId: string;

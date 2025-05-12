@@ -17,13 +17,12 @@
             <input
               id="email"
               v-model="email"
-              :rules="[rules.required, rules.email]"
               required
               type="email"
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-300"
               placeholder="you@example.com"
             />
-            <span v-if="!valid && email && !rules.email(email)" class="text-red-600 text-xs mt-1">{{
+            <span v-if="email && !rules.email(email)" class="text-red-600 text-xs mt-1">{{
               rules.email(email)
             }}</span>
           </div>
@@ -32,13 +31,12 @@
             <input
               id="password"
               v-model="password"
-              :rules="[rules.required, rules.minLength]"
               required
               type="password"
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-300"
               placeholder="••••••••"
             />
-            <span v-if="!valid && password && !rules.minLength(password)" class="text-red-600 text-xs mt-1">{{
+            <span v-if="password && !rules.minLength(password)" class="text-red-600 text-xs mt-1">{{
               rules.minLength(password)
             }}</span>
           </div>
@@ -47,7 +45,6 @@
             <input
               id="firstName"
               v-model="firstName"
-              :rules="[rules.required]"
               required
               type="text"
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-300"
@@ -59,7 +56,6 @@
             <input
               id="lastName"
               v-model="lastName"
-              :rules="[rules.required]"
               required
               type="text"
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-300"
@@ -71,7 +67,6 @@
             <select
               id="role"
               v-model="role"
-              :rules="[rules.required]"
               required
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-300"
             >
@@ -83,7 +78,7 @@
             <textarea
               id="bio"
               v-model="bio"
-              :rules="[rules.maxLength, rules.required]"
+              required
               rows="4"
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-300"
               placeholder="Tell us about yourself..."
@@ -91,6 +86,7 @@
             <span v-if="bio && !rules.maxLength(bio)" class="text-red-600 text-xs mt-1">{{
               rules.maxLength(bio)
             }}</span>
+            <span v-if="!bio && submitted" class="text-red-600 text-xs mt-1">{{ rules.required(bio) }}</span>
           </div>
         </div>
         <div class="flex justify-between">
@@ -142,6 +138,7 @@ const router = useRouter();
 const userStore = useUserStore();
 const loading = ref(false);
 const error = ref<string | null>(null);
+const submitted = ref(false);
 
 const email = ref("");
 const password = ref("");
@@ -159,7 +156,7 @@ const rules = {
     return pattern.test(value) || "Invalid email address";
   },
   minLength: (value: string) => value.length >= 8 || "Minimum 8 characters required",
-  maxLength: (value: string) => !value || value.length <= 1000 || "Maximum 1000 characters",
+  maxLength: (value: string) => value.length <= 1000 || "Maximum 1000 characters",
 };
 
 // Compute form validity based on all input validations
@@ -172,11 +169,13 @@ const valid = computed(() => {
     rules.required(firstName.value) === true &&
     rules.required(lastName.value) === true &&
     rules.required(role.value) === true &&
+    rules.required(bio.value) === true &&
     rules.maxLength(bio.value) === true
   );
 });
 
 const register = async () => {
+  submitted.value = true;
   if (!valid.value) return;
   loading.value = true;
   error.value = null;

@@ -100,7 +100,7 @@
               </div>
               <div class="relative">
                 <label for="budget" class="block text-sm font-medium text-gray-700">Budget</label>
-                <span class="absolute left-3 top-9 text-gray-400">$</span>
+                <span class="absolute left-3 top-8 text-gray-400">$</span>
                 <input
                   id="budget"
                   v-model.number="newJob.budget"

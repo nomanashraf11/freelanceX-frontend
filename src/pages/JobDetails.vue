@@ -34,7 +34,11 @@
           <h2 class="text-2xl font-bold text-gray-900">{{ job.title }}</h2>
           <div class="mt-4 space-y-3">
             <p><strong class="text-gray-700">Description:</strong> {{ job.description }}</p>
-            <p><strong class="text-gray-700">Client ID:</strong> {{ job.clientId }}</p>
+            <p>
+              <strong class="text-gray-700">Client:</strong>
+              {{ `${job.client.firstName} ${job.client.lastName}` }}
+            </p>
+            <p><strong class="text-gray-700">Budget:</strong> {{ job.budget }}$</p>
             <p><strong class="text-gray-700">Created At:</strong> {{ formatDate(job.createdAt) }}</p>
           </div>
         </div>
@@ -188,7 +192,7 @@
                   :key="bid.bidId"
                   :class="{
                     'hover:bg-gray-50 transition duration-200': true,
-                    'bg-green-50 border-l-4 border-green-500': contractForJob?.bidId === bid.bidId,
+                    'bg-green-50 border-l-4 border-green-500': !!bid.contract,
                   }"
                 >
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -209,9 +213,7 @@
                     >
                       Create Contract
                     </button>
-                    <span v-else-if="!!bid.contract" class="text-green-600 font-medium"
-                      >Contracted</span
-                    >
+                    <span v-else-if="!!bid.contract" class="text-green-600 font-medium">Contracted</span>
                   </td>
                 </tr>
               </tbody>
@@ -336,7 +338,7 @@ import { useJobsStore } from "../store/job";
 import { useContractsStore } from "../store/contract";
 import type { Job } from "../types/job";
 import type { Bid, BidCreate } from "../types/bid";
-import type { Contract, ContractCreate } from "../types/contract";
+import type { ContractCreate } from "../types/contract";
 
 const route = useRoute();
 const userStore = useUserStore();
@@ -365,9 +367,10 @@ const hasBid = computed(() =>
   )
 );
 
-const hasContract = computed(() =>
-  contractsStore.contracts.some((contract: Contract) => contract.jobId === (route.params.id as string))
-);
+const hasContract = computed(() => {
+  const jobId = route.params.id as string;
+  return bidsStore.bids.some((bid: Bid) => bid.jobId === jobId && bid.contract);
+});
 
 const rules = {
   required: (value: number | string) => !!value || "This field is required",
@@ -458,12 +461,6 @@ onMounted(async () => {
           console.error("Failed to fetch bids:", err);
         } finally {
           bidsLoading.value = false;
-        }
-
-        try {
-          await contractsStore.findContractByClient(userStore.user?.userId);
-        } catch (err) {
-          console.error("Failed to fetch contracts:", err);
         }
       } else if (userStore.user?.role === "FREELANCER") {
         try {

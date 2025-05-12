@@ -1,10 +1,17 @@
+export interface Client {
+  firstName: string;
+  lastName: string;
+}
+
 export interface Job {
   jobId: string;
   title: string;
   location: string;
   description: string;
   clientId: string;
+  client: Client;
   status: "OPEN" | "CLOSED";
+  budget: number;
   createdAt: Date;
   updatedAt: Date;
 }
