@@ -59,6 +59,7 @@ export async function putAPI<T>(
     throw error;
   }
 }
+
 export async function deleteAPI<T>(
   endpoint: string,
   options: ApiOptions = { isAuthRequired: true }
