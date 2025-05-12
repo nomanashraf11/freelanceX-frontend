@@ -1,6 +1,6 @@
 <template>
   <default-layout>
-    <div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 mt-14">
       <div class="max-w-7xl mx-auto">
         <div class="flex justify-between items-center mb-8">
           <div>
@@ -264,6 +264,7 @@ const toggleUserStatus = async (user: any) => {
     successMessage.value = `User ${
       user.disabled ? "enabled" : "disabled"
     } successfully`;
+    await fetchUsers();
     setTimeout(() => (successMessage.value = null), 3000);
   } catch (err) {
     error.value = `Failed to ${

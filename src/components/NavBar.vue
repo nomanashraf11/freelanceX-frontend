@@ -1,13 +1,19 @@
 <template>
   <header class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
-    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+    <nav
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between"
+    >
       <!-- App Title / Dashboard Link -->
       <div class="flex">
         <button
           @click="goToDashboard"
           class="text-xl font-bold text-gray-900 hover:text-indigo-600 transition duration-300"
         >
-          <img src="../assets/logo.svg" alt="FreelanceX Logo" class="h-[60px] w-auto" />
+          <img
+            src="../assets/logo.svg"
+            alt="FreelanceX Logo"
+            class="h-[60px] w-auto"
+          />
         </button>
       </div>
       <!-- Spacer -->
@@ -82,11 +88,21 @@
               Bids
             </router-link>
             <router-link
-              v-if="userStore.user?.role === 'FREELANCER' || userStore.user?.role === 'CLIENT'"
+              v-if="
+                userStore.user?.role === 'FREELANCER' ||
+                userStore.user?.role === 'CLIENT'
+              "
               to="/contracts"
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
             >
               Contracts
+            </router-link>
+            <router-link
+              v-if="userStore.user?.role === 'CLIENT'"
+              to="/contracts"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
+            >
+              Jobs
             </router-link>
             <button
               @click="logout"
