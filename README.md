@@ -1,4 +1,3 @@
-
 # FreelanceX Frontend
 
 This is the **frontend for the FreelanceX project**. The backend is developed in **Spring Boot**.
@@ -72,7 +71,10 @@ src/
 
 ## 🧑‍💻 Contributors
 
-- [Your Name Here]
+- NOMAN
+- ANJISH
+- MISHU
+- Suliman
 
 ---
 
