@@ -3,7 +3,7 @@
     <div class="max-w-7xl mx-auto px-4 py-10">
       <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-bold text-gray-800 mt-16">My Bids</h1>
-        <span class="text-sm text-gray-500">
+        <span class="text-sm text-gray-500 mt-10 font-bold">
           {{ bids.length }} {{ bids.length === 1 ? "bid" : "bids" }} total
         </span>
       </div>
