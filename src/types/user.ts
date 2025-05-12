@@ -2,6 +2,7 @@ export interface Profile {
   firstName: string;
   lastName: string;
   bio: string;
+  skillVerified: boolean;
 }
 
 export interface User {
