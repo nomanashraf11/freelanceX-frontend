@@ -60,6 +60,19 @@ export async function putAPI<T>(
   }
 }
 
+export async function deleteAPI<T>(
+  endpoint: string,
+  options: ApiOptions = { isAuthRequired: true }
+): Promise<AxiosResponse<T>> {
+  try {
+    return await api.delete<T>(endpoint, {
+      headers: options.isAuthRequired ? getAuthHeader() : {},
+    });
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function patchAPI<T>(
   endpoint: string,
   data: unknown,

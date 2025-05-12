@@ -1,12 +1,12 @@
 <template>
-  <v-app>
+  <div class="min-h-screen flex flex-col">
     <navbar />
-    <v-main>
+    <main class="flex-grow mt-20">
       <slot />
-    </v-main>
-  </v-app>
+    </main>
+  </div>
 </template>
 
 <script setup lang="ts">
-import Navbar from "../components/Navbar.vue";
+import Navbar from "../components/NavBar.vue";
 </script>

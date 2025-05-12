@@ -2,6 +2,7 @@ export interface Profile {
   firstName: string;
   lastName: string;
   bio: string;
+  skillVerified: boolean;
 }
 
 export interface User {
@@ -9,6 +10,7 @@ export interface User {
   email: string;
   profile: Profile;
   role: "CLIENT" | "FREELANCER" | "ADMIN";
+  disabled: boolean;
 }
 
 export interface RegisterUser {

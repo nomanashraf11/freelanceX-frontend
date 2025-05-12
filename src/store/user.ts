@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getAPI, postAPI } from "../utils/api";
+import { getAPI, patchAPI, postAPI, putAPI } from "../utils/api";
 import type { RegisterUser, User } from "../types/user";
 
 export const useUserStore = defineStore("user", {
@@ -17,6 +17,10 @@ export const useUserStore = defineStore("user", {
           { email, password },
           { isAuthRequired: false }
         );
+        console.log(response.status);
+        if (response.status !== 200) {
+          throw new Error(response?.data?.message || "Login failed");
+        }
         this.token = response.data.token;
         localStorage.setItem("token", this.token);
         await this.fetchUser();
@@ -25,6 +29,7 @@ export const useUserStore = defineStore("user", {
         this.isAuthenticated = false;
         localStorage.removeItem("token");
         console.error(error);
+        throw new Error(error?.message || "Login failed");
       }
     },
 
@@ -34,6 +39,7 @@ export const useUserStore = defineStore("user", {
           isAuthRequired: false,
         });
       } catch (error) {
+        throw new Error(error?.message || "Register failed");
         console.error("Registration failed:", error);
       }
     },
@@ -62,6 +68,19 @@ export const useUserStore = defineStore("user", {
     async fetchUsers() {
       try {
         const response = await getAPI<User[]>("/admin/users");
+        this.users = response.data;
+      } catch (error) {
+        this.users = [];
+        console.error("Failed to fetch users:", error);
+      }
+    },
+
+    async updateUserStatus(userId: any) {
+      try {
+        const response = await patchAPI<User[]>(
+          `/admin/user/${userId}/disable`,
+          {}
+        );
         this.users = response.data;
       } catch (error) {
         this.users = [];

@@ -5,7 +5,11 @@ import Register from "../pages/Register.vue";
 import Profile from "../pages/Profile.vue";
 import JobDetails from "../pages/JobDetails.vue";
 import AdminUsers from "../pages/AdminUser.vue";
+import FreelancerBids from "../pages/FreelancerBids.vue";
+import Contracts from "../pages/Contracts.vue";
 import { useUserStore } from "../store/user";
+import ContractDetails from "../pages/ContractDetails.vue";
+import Jobs from "../pages/Jobs.vue";
 
 const routes = [
   { path: "/", component: Dashboard, meta: { requiresAuth: true } },
@@ -13,7 +17,31 @@ const routes = [
   { path: "/register", component: Register },
   { path: "/profile", component: Profile, meta: { requiresAuth: true } },
   { path: "/job/:id", component: JobDetails, meta: { requiresAuth: true } },
-  { path: "/admin/users", component: AdminUsers, meta: { requiresAuth: true, requiresAdmin: true } },
+  {
+    path: "/admin/users",
+    component: AdminUsers,
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
+  {
+    path: "/bids",
+    meta: { requiresAuth: true },
+    component: FreelancerBids,
+  },
+  {
+    path: "/contracts",
+    meta: { requiresAuth: true },
+    component: Contracts,
+  },
+  {
+    path: "/jobs",
+    meta: { requiresAuth: true },
+    component: Jobs,
+  },
+  {
+    path: "/contract/:id",
+    meta: { requiresAuth: true },
+    component: ContractDetails,
+  },
 ];
 
 const router = createRouter({
@@ -37,7 +65,7 @@ router.beforeEach(async (to, from, next) => {
         });
         return;
       }
-      
+
       if (to.meta.requiresAdmin && userStore.user?.role !== "ADMIN") {
         next("/");
         return;
@@ -52,7 +80,6 @@ router.beforeEach(async (to, from, next) => {
       });
     }
   } else {
-    // Prevent logged-in users from accessing login/register
     if (userStore.isAuthenticated && (to.path === "/login" || to.path === "/register")) {
       next("/");
       return;
