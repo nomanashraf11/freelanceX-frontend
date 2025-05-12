@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import type { Rating, CreateReview } from "../types/rating";
+import { getAPI, postAPI } from "../utils/api";
 
 export const useRatingStore = defineStore("reviews", {
   state: () => ({
@@ -13,7 +14,7 @@ export const useRatingStore = defineStore("reviews", {
       this.loading = true;
       this.error = null;
       try {
-        await axios.post("/rating", reviewData);
+        await postAPI("/rating", reviewData);
       } catch (err: any) {
         this.error = err.response?.data?.message || "Failed to create review";
         throw err;
@@ -40,7 +41,7 @@ export const useRatingStore = defineStore("reviews", {
       this.loading = true;
       this.error = null;
       try {
-        const response = await axios.get<Rating[]>(`/rating/job/${jobId}`);
+        const response = await getAPI<Rating[]>(`/rating/job/${jobId}`);
         this.rating = response.data;
       } catch (err: any) {
         this.error = err.response?.data?.message || "Failed to fetch reviews";

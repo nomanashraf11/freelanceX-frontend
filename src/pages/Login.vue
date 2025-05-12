@@ -1,11 +1,18 @@
 <template>
   <div
-    class="min-h-screen bg-black flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+    class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
   >
     <div
       class="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-2xl transform transition-all hover:scale-105"
     >
       <div>
+        <div>
+          <img
+            src="../assets/logo.svg"
+            alt="FreelanceX Logo"
+            class="h-[60px] w-auto m-auto mb-8"
+          />
+        </div>
         <h2 class="text-center text-3xl font-extrabold text-gray-900">
           Sign In
         </h2>
