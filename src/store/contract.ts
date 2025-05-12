@@ -7,6 +7,7 @@ import type { Contract } from "../types/contract";
 export const useContractsStore = defineStore("contracts", {
   state: () => ({
     contracts: [] as Contract[],
+    contract: null as Contract | null,
     loading: false,
     error: null,
   }),
@@ -44,6 +45,32 @@ export const useContractsStore = defineStore("contracts", {
       } catch (error: any) {
         this.error = error.message;
         throw new Error("Failed to fetch contracts by freelancer");
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async fetchFreelancerContractById(userId: string, contractId: string) {
+      this.loading = true;
+      try {
+        const response = await getAPI<Contract>(`/contract/${contractId}/freelancer/${userId}`);
+        this.contract = response.data;
+      } catch (error: any) {
+        this.error = error.message;
+        throw new Error("Failed to fetch contract by freelancer");
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async fetchClientContractById(userId: string, contractId: string) {
+      this.loading = true;
+      try {
+        const response = await getAPI<Contract>(`/contract/${contractId}/client/${userId}`);
+        this.contract = response.data;
+      } catch (error: any) {
+        this.error = error.message;
+        throw new Error("Failed to fetch contract by client");
       } finally {
         this.loading = false;
       }
