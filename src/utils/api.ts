@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { AxiosResponse } from "axios";
 
-const BASE_URL = "http://172.31.160.11:8080/api";
+const BASE_URL = "http://172.17.157.202:8080/api";
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -53,6 +53,18 @@ export async function putAPI<T>(
 ): Promise<AxiosResponse<T>> {
   try {
     return await api.put<T>(endpoint, data, {
+      headers: options.isAuthRequired ? getAuthHeader() : {},
+    });
+  } catch (error) {
+    throw error;
+  }
+}
+export async function deleteAPI<T>(
+  endpoint: string,
+  options: ApiOptions = { isAuthRequired: true }
+): Promise<AxiosResponse<T>> {
+  try {
+    return await api.delete<T>(endpoint, {
       headers: options.isAuthRequired ? getAuthHeader() : {},
     });
   } catch (error) {

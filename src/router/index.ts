@@ -5,6 +5,7 @@ import Register from "../pages/Register.vue";
 import Profile from "../pages/Profile.vue";
 import JobDetails from "../pages/JobDetails.vue";
 import AdminUsers from "../pages/AdminUser.vue";
+import FreelancerBids from "../pages/FreelancerBids.vue";
 import { useUserStore } from "../store/user";
 
 const routes = [
@@ -13,7 +14,16 @@ const routes = [
   { path: "/register", component: Register },
   { path: "/profile", component: Profile, meta: { requiresAuth: true } },
   { path: "/job/:id", component: JobDetails, meta: { requiresAuth: true } },
-  { path: "/admin/users", component: AdminUsers, meta: { requiresAuth: true, requiresAdmin: true } },
+  {
+    path: "/admin/users",
+    component: AdminUsers,
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
+  {
+    path: "/bids",
+    meta: { requiresAuth: true },
+    component: FreelancerBids,
+  },
 ];
 
 const router = createRouter({
@@ -52,7 +62,10 @@ router.beforeEach(async (to, from, next) => {
       });
     }
   } else {
-    if (userStore.isAuthenticated && (to.path === "/login" || to.path === "/register")) {
+    if (
+      userStore.isAuthenticated &&
+      (to.path === "/login" || to.path === "/register")
+    ) {
       next("/");
       return;
     }

@@ -80,6 +80,13 @@
             >
               All Users
             </router-link>
+            <router-link
+              v-if="userStore.user?.role === 'FREELANCER'"
+              to="/bids"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
+            >
+              My bids
+            </router-link>
             <button
               @click="logout"
               class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"

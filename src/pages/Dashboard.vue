@@ -2,7 +2,7 @@
   <default-layout>
     <div class="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8 mt-12">
       <div class="max-w-7xl mx-auto">
-        <h1 class="text-3xl font-extrabold text-gray-900 mb-14">
+        <h1 class="text-3xl font-extrabold text-gray-900 mb-14 mt-10">
           Jobs you might like
         </h1>
         <div

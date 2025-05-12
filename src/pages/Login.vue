@@ -155,7 +155,7 @@ const login = async () => {
 
   try {
     await userStore.login(email.value, password.value);
-    console.log("here");
+
     toast.success("Login successful! Redirecting...", {
       timeout: 2000,
     });
