@@ -21,7 +21,7 @@ export interface Contract {
     status: "OPEN" | "CLOSED";
   };
   terms: string;
-  status: "ACTIVE" | "INACTIVE";
+  status: "ACTIVE" | "COMPLETED";
   createdAt: string;
   updatedAt: string;
 }

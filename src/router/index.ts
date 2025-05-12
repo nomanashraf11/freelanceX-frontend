@@ -8,6 +8,7 @@ import AdminUsers from "../pages/AdminUser.vue";
 import FreelancerBids from "../pages/FreelancerBids.vue";
 import Contracts from "../pages/Contracts.vue";
 import { useUserStore } from "../store/user";
+import ContractDetails from "../pages/ContractDetails.vue";
 
 const routes = [
   { path: "/", component: Dashboard, meta: { requiresAuth: true } },
@@ -29,6 +30,11 @@ const routes = [
     path: "/contracts",
     meta: { requiresAuth: true },
     component: Contracts,
+  },
+  {
+    path: "/contract/:id",
+    meta: { requiresAuth: true },
+    component: ContractDetails,
   },
 ];
 
@@ -68,10 +74,7 @@ router.beforeEach(async (to, from, next) => {
       });
     }
   } else {
-    if (
-      userStore.isAuthenticated &&
-      (to.path === "/login" || to.path === "/register")
-    ) {
+    if (userStore.isAuthenticated && (to.path === "/login" || to.path === "/register")) {
       next("/");
       return;
     }

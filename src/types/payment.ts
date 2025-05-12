@@ -6,7 +6,7 @@ interface Contract {
 interface Escrow {
   escrowId: string;
   paymentId: string;
-  status: string;
+  status: "HELD" | "RELEASED";
   payment: string;
   createdAt: string;
   updatedAt: string;
