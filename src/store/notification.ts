@@ -8,7 +8,9 @@ export const useNotificationStore = defineStore("notifications", {
   actions: {
     async fetchNotification(userId: string) {
       try {
-        const response = await getAPI<Notification[]>(`/notification/user/${userId}`);
+        const response = await getAPI<Notification[]>(
+          `/notification/user/${userId}`
+        );
         this.notifications = response.data;
       } catch (error) {
         throw new Error("Failed to create contract");

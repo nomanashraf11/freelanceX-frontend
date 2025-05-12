@@ -85,7 +85,14 @@
               to="/bids"
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
             >
-              My bids
+              Bids
+            </router-link>
+            <router-link
+              v-if="userStore.user?.role === 'FREELANCER'"
+              to="/contracts"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
+            >
+              Contracts
             </router-link>
             <button
               @click="logout"

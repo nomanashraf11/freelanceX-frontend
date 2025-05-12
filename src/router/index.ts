@@ -6,6 +6,7 @@ import Profile from "../pages/Profile.vue";
 import JobDetails from "../pages/JobDetails.vue";
 import AdminUsers from "../pages/AdminUser.vue";
 import FreelancerBids from "../pages/FreelancerBids.vue";
+import Contracts from "../pages/Contracts.vue";
 import { useUserStore } from "../store/user";
 
 const routes = [
@@ -23,6 +24,11 @@ const routes = [
     path: "/bids",
     meta: { requiresAuth: true },
     component: FreelancerBids,
+  },
+  {
+    path: "/contracts",
+    meta: { requiresAuth: true },
+    component: Contracts,
   },
 ];
 
