@@ -53,7 +53,7 @@
         </div>
 
         <!-- Place a Bid Section (Freelancer) -->
-        <div v-if="userStore.user?.role === 'FREELANCER' && !hasBid && !loading" class="mt-8">
+        <div v-if="userStore.user?.role === 'FREELANCER' && !myBid && !loading" class="mt-8">
           <h2 class="text-2xl font-bold text-gray-900">Place a Bid</h2>
           <div
             v-if="bidError"
@@ -132,9 +132,13 @@
             </button>
           </form>
         </div>
-        <div v-else-if="userStore.user?.role === 'FREELANCER' && hasBid && !loading" class="mt-8">
-          <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-md" role="alert">
-            You have already placed a bid on this job.
+        <div v-else-if="userStore.user?.role === 'FREELANCER' && !!myBid && !loading" class="mt-8">
+          <h2 class="text-2xl font-bold text-gray-900">Your Bid</h2>
+          <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-md mt-4">
+            <p><strong>Your Bid Details:</strong></p>
+            <p><strong>Name:</strong> {{ `${myBid.freelancer.firstName} ${myBid.freelancer.lastName}` }}</p>
+            <p><strong>Bid Amount:</strong> ${{ myBid.amount.toFixed(2) }}</p>
+            <p><strong>Proposal:</strong> {{ myBid.proposal }}</p>
           </div>
         </div>
 
@@ -361,8 +365,8 @@ const selectedBidId = ref<string>("");
 const successSnackbar = ref(false);
 const successMessage = ref<string>("");
 
-const hasBid = computed(() =>
-  bidsStore.bids.some(
+const myBid = computed(() =>
+  bidsStore.bids.find(
     (bid: Bid) => bid.freelancerId === userStore.user?.userId && bid.jobId === (route.params.id as string)
   )
 );
