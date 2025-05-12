@@ -9,7 +9,7 @@ export const useRatingStore = defineStore("reviews", {
     error: null,
   }),
   actions: {
-    async createReview(reviewData: CreateReview) {
+    async createRating(reviewData: CreateReview) {
       this.loading = true;
       this.error = null;
       try {
@@ -22,7 +22,7 @@ export const useRatingStore = defineStore("reviews", {
       }
     },
 
-    async fetchReviewsByUserId(userId: string) {
+    async fetchRatingsByUserId(userId: string) {
       this.loading = true;
       this.error = null;
       try {
@@ -36,7 +36,7 @@ export const useRatingStore = defineStore("reviews", {
       }
     },
 
-    async fetchReviewsByJobId(jobId: string) {
+    async fetchRatingsByJobId(jobId: string) {
       this.loading = true;
       this.error = null;
       try {

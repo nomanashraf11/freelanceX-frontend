@@ -1,9 +1,9 @@
-export interface Freelancer {
+interface Freelancer {
   firstName: string;
   lastName: string;
 }
 
-export interface Contract {
+interface Contract {
   contractId: string;
   bidId: string;
   jobId: string;

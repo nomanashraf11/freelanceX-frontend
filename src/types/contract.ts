@@ -15,6 +15,8 @@ export interface Contract {
   };
   job: {
     jobId: string;
+    title: string;
+    budget: number;
     clientId: string;
     status: "OPEN" | "CLOSED";
   };
