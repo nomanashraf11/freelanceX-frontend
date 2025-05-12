@@ -1,9 +1,22 @@
+export interface Freelancer {
+  firstName: string;
+  lastName: string;
+}
+
+export interface Contract {
+  contractId: string;
+  bidId: string;
+  jobId: string;
+}
+
 export interface Bid {
   bidId: string;
   jobId: string;
   freelancerId: string;
   amount: number;
   proposal: string;
+  freelancer: Freelancer;
+  contract: Contract;
   createdAt: Date;
   updatedAt: Date;
 }
