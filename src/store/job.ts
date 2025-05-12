@@ -33,5 +33,9 @@ export const useJobsStore = defineStore("jobs", {
         throw error;
       }
     },
+    async refreshJobs() {
+      this.jobs = []; // Clear current jobs to force refresh
+      await this.fetchJobs(); // Call your existing fetch method
+    },
   },
 });

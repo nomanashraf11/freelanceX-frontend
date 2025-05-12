@@ -2,7 +2,9 @@
   <default-layout>
     <div class="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl mx-auto space-y-8">
-        <h1 class="text-3xl font-extrabold text-gray-900 text-center">Job Details</h1>
+        <h1 class="text-3xl font-extrabold text-gray-900 text-center">
+          Job Details
+        </h1>
 
         <!-- Error Alert -->
         <div
@@ -21,8 +23,19 @@
             fill="none"
             viewBox="0 0 24 24"
           >
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8h8a8 8 0 01-16 0z"></path>
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v8h8a8 8 0 01-16 0z"
+            ></path>
           </svg>
         </div>
 
@@ -33,13 +46,21 @@
         >
           <h2 class="text-2xl font-bold text-gray-900">{{ job.title }}</h2>
           <div class="mt-4 space-y-3">
-            <p><strong class="text-gray-700">Description:</strong> {{ job.description }}</p>
+            <p>
+              <strong class="text-gray-700">Description:</strong>
+              {{ job.description }}
+            </p>
             <p>
               <strong class="text-gray-700">Client:</strong>
               {{ `${job.client.firstName} ${job.client.lastName}` }}
             </p>
-            <p><strong class="text-gray-700">Budget:</strong> {{ job.budget }}$</p>
-            <p><strong class="text-gray-700">Created At:</strong> {{ formatDate(job.createdAt) }}</p>
+            <p>
+              <strong class="text-gray-700">Budget:</strong> {{ job.budget }}$
+            </p>
+            <p>
+              <strong class="text-gray-700">Created At:</strong>
+              {{ formatDate(job.createdAt) }}
+            </p>
           </div>
         </div>
 
@@ -53,7 +74,10 @@
         </div>
 
         <!-- Place a Bid Section (Freelancer) -->
-        <div v-if="userStore.user?.role === 'FREELANCER' && !myBid && !loading" class="mt-8">
+        <div
+          v-if="userStore.user?.role === 'FREELANCER' && !myBid && !loading"
+          class="mt-8"
+        >
           <h2 class="text-2xl font-bold text-gray-900">Place a Bid</h2>
           <div
             v-if="bidError"
@@ -62,11 +86,21 @@
           >
             {{ bidError }}
           </div>
-          <form @submit.prevent="placeBid" class="mt-4 space-y-4 bg-white p-6 rounded-xl shadow-md">
+          <form
+            @submit.prevent="placeBid"
+            class="mt-4 space-y-4 bg-white p-6 rounded-xl shadow-md"
+          >
             <div>
-              <label for="bidAmount" class="block text-sm font-medium text-gray-700">Bid Amount</label>
+              <label
+                for="bidAmount"
+                class="block text-sm font-medium text-gray-700"
+                >Bid Amount</label
+              >
               <div class="relative mt-1">
-                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">$</span>
+                <span
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500"
+                  >$</span
+                >
                 <input
                   id="bidAmount"
                   v-model.number="bidAmount"
@@ -78,14 +112,21 @@
                 />
               </div>
               <span
-                v-if="bidAmount && (!rules.positive(bidAmount) || !rules.minBid(bidAmount))"
+                v-if="
+                  bidAmount &&
+                  (!rules.positive(bidAmount) || !rules.minBid(bidAmount))
+                "
                 class="text-red-600 text-xs mt-1"
               >
                 {{ rules.positive(bidAmount) || rules.minBid(bidAmount) }}
               </span>
             </div>
             <div>
-              <label for="bidProposal" class="block text-sm font-medium text-gray-700">Proposal</label>
+              <label
+                for="bidProposal"
+                class="block text-sm font-medium text-gray-700"
+                >Proposal</label
+              >
               <textarea
                 id="bidProposal"
                 v-model="bidProposal"
@@ -106,7 +147,10 @@
               type="submit"
               class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition duration-300"
             >
-              <span v-if="bidLoading" class="absolute left-0 inset-y-0 flex items-center pl-3">
+              <span
+                v-if="bidLoading"
+                class="absolute left-0 inset-y-0 flex items-center pl-3"
+              >
                 <svg
                   class="animate-spin h-5 w-5 text-white"
                   xmlns="http://www.w3.org/2000/svg"
@@ -132,11 +176,21 @@
             </button>
           </form>
         </div>
-        <div v-else-if="userStore.user?.role === 'FREELANCER' && !!myBid && !loading" class="mt-8">
+        <div
+          v-else-if="
+            userStore.user?.role === 'FREELANCER' && !!myBid && !loading
+          "
+          class="mt-8"
+        >
           <h2 class="text-2xl font-bold text-gray-900">Your Bid</h2>
-          <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-md mt-4">
+          <div
+            class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-md mt-4"
+          >
             <p><strong>Your Bid Details:</strong></p>
-            <p><strong>Name:</strong> {{ `${myBid.freelancer.firstName} ${myBid.freelancer.lastName}` }}</p>
+            <p>
+              <strong>Name:</strong>
+              {{ `${myBid.freelancer.firstName} ${myBid.freelancer.lastName}` }}
+            </p>
             <p><strong>Bid Amount:</strong> ${{ myBid.amount.toFixed(2) }}</p>
             <p><strong>Proposal:</strong> {{ myBid.proposal }}</p>
           </div>
@@ -144,7 +198,11 @@
 
         <!-- Bids Section (Client) -->
         <div
-          v-if="userStore.user?.role === 'CLIENT' && job?.clientId === userStore.user?.userId && !loading"
+          v-if="
+            userStore.user?.role === 'CLIENT' &&
+            job?.clientId === userStore.user?.userId &&
+            !loading
+          "
           class="mt-8"
         >
           <h2 class="text-2xl font-bold text-gray-900">Bids</h2>
@@ -163,7 +221,11 @@
                 stroke="currentColor"
                 stroke-width="4"
               ></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8h8a8 8 0 01-16 0z"></path>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v8h8a8 8 0 01-16 0z"
+              ></path>
             </svg>
           </div>
           <div
@@ -173,19 +235,29 @@
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <tr>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
                     Freelancer
                   </th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
                     Amount
                   </th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
                     Proposal
                   </th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
                     Created At
                   </th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
                     Action
                   </th>
                 </tr>
@@ -200,12 +272,16 @@
                   }"
                 >
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {{ `${bid.freelancer.firstName} ${bid.freelancer.lastName}` }}
+                    {{
+                      `${bid.freelancer.firstName} ${bid.freelancer.lastName}`
+                    }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     ${{ bid.amount.toFixed(2) }}
                   </td>
-                  <td class="px-6 py-4 text-sm text-gray-900">{{ bid.proposal }}</td>
+                  <td class="px-6 py-4 text-sm text-gray-900">
+                    {{ bid.proposal }}
+                  </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {{ formatDate(bid.createdAt) }}
                   </td>
@@ -217,7 +293,11 @@
                     >
                       Create Contract
                     </button>
-                    <span v-else-if="!!bid.contract" class="text-green-600 font-medium">Contracted</span>
+                    <span
+                      v-else-if="!!bid.contract"
+                      class="text-green-600 font-medium"
+                      >Contracted</span
+                    >
                   </td>
                 </tr>
               </tbody>
@@ -238,8 +318,12 @@
           class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50"
           @click.self="contractDialog = false"
         >
-          <div class="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl transform transition-all">
-            <h2 class="text-xl font-bold text-gray-900 mb-4">Create Contract</h2>
+          <div
+            class="bg-white rounded-xl p-6 max-w-md w-full shadow-2xl transform transition-all"
+          >
+            <h2 class="text-xl font-bold text-gray-900 mb-4">
+              Create Contract
+            </h2>
             <div
               v-if="contractError"
               class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md mb-4"
@@ -249,7 +333,9 @@
             </div>
             <form @submit.prevent="createContract" class="space-y-4">
               <div>
-                <label for="contractTerms" class="block text-sm font-medium text-gray-700"
+                <label
+                  for="contractTerms"
+                  class="block text-sm font-medium text-gray-700"
                   >Contract Terms</label
                 >
                 <textarea
@@ -261,7 +347,10 @@
                   placeholder="Enter contract terms..."
                 ></textarea>
                 <span
-                  v-if="contractTerms && !contractRules.maxTermsLength(contractTerms)"
+                  v-if="
+                    contractTerms &&
+                    !contractRules.maxTermsLength(contractTerms)
+                  "
                   class="text-red-600 text-xs mt-1"
                 >
                   {{ contractRules.maxTermsLength(contractTerms) }}
@@ -281,7 +370,10 @@
                   :disabled="!contractValid || contractLoading"
                   class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition duration-300"
                 >
-                  <span v-if="contractLoading" class="absolute left-0 inset-y-0 flex items-center pl-3">
+                  <span
+                    v-if="contractLoading"
+                    class="absolute left-0 inset-y-0 flex items-center pl-3"
+                  >
                     <svg
                       class="animate-spin h-5 w-5 text-white"
                       xmlns="http://www.w3.org/2000/svg"
@@ -323,7 +415,12 @@
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 13l4 4L19 7"
+            ></path>
           </svg>
           <span>{{ successMessage }}</span>
         </div>
@@ -367,7 +464,9 @@ const successMessage = ref<string>("");
 
 const myBid = computed(() =>
   bidsStore.bids.find(
-    (bid: Bid) => bid.freelancerId === userStore.user?.userId && bid.jobId === (route.params.id as string)
+    (bid: Bid) =>
+      bid.freelancerId === userStore.user?.userId &&
+      bid.jobId === (route.params.id as string)
   )
 );
 
@@ -380,12 +479,14 @@ const rules = {
   required: (value: number | string) => !!value || "This field is required",
   positive: (value: number) => value > 0 || "Amount must be positive",
   minBid: (value: number) => value >= 0.1 || "Minimum bid is $0.10",
-  maxProposalLength: (value: string) => value.length <= 1000 || "Maximum 1000 characters",
+  maxProposalLength: (value: string) =>
+    value.length <= 1000 || "Maximum 1000 characters",
 };
 
 const contractRules = {
   required: (value: string) => !!value || "This field is required",
-  maxTermsLength: (value: string) => value.length <= 1000 || "Maximum 1000 characters",
+  maxTermsLength: (value: string) =>
+    value.length <= 1000 || "Maximum 1000 characters",
 };
 
 const bidValid = computed(() => {
@@ -456,7 +557,10 @@ onMounted(async () => {
     job.value = jobsStore.job;
 
     if (job.value) {
-      if (userStore.user?.role === "CLIENT" && job.value.clientId === userStore.user?.userId) {
+      if (
+        userStore.user?.role === "CLIENT" &&
+        job.value.clientId === userStore.user?.userId
+      ) {
         bidsLoading.value = true;
         try {
           await bidsStore.fetchBids(jobId);

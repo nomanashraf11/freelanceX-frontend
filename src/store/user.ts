@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getAPI, postAPI } from "../utils/api";
+import { getAPI, patchAPI, postAPI, putAPI } from "../utils/api";
 import type { RegisterUser, User } from "../types/user";
 
 export const useUserStore = defineStore("user", {
@@ -68,6 +68,19 @@ export const useUserStore = defineStore("user", {
     async fetchUsers() {
       try {
         const response = await getAPI<User[]>("/admin/users");
+        this.users = response.data;
+      } catch (error) {
+        this.users = [];
+        console.error("Failed to fetch users:", error);
+      }
+    },
+
+    async updateUserStatus(userId: any) {
+      try {
+        const response = await patchAPI<User[]>(
+          `/admin/user/${userId}/disable`,
+          {}
+        );
         this.users = response.data;
       } catch (error) {
         this.users = [];

@@ -536,6 +536,7 @@ const submitJob = async () => {
     };
     successSnackbar.value = true;
     setTimeout(() => (successSnackbar.value = false), 3000);
+    await jobsStore.refreshJobs(); // Add this line to refresh jobs
   } catch (err) {
     formError.value = "Failed to post job. Please try again.";
     console.error("Failed to post job:", err);

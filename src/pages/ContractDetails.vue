@@ -238,85 +238,82 @@
                   {{ releasing ? "Releasing..." : "Release Escrow Payment" }}
                 </button>
               </div>
-              <!-- Reviews Section -->
-              <div
-                v-if="contract?.status === 'COMPLETED'"
-                class="bg-white shadow overflow-hidden rounded-xl"
-              >
-                <div class="px-6 py-8 sm:px-8">
-                  <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-medium text-gray-900">Reviews</h3>
-                    <button
-                      v-if="!hasSubmittedReview && canSubmitReview"
-                      @click="showReviewModal = true"
-                      class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      Add Review
-                    </button>
-                  </div>
-
-                  <!-- Client Review -->
-                  <div
-                    v-if="clientReview"
-                    class="mb-6 p-4 border border-gray-200 rounded-lg"
-                  >
-                    <div class="flex items-center mb-2">
-                      <span class="font-medium text-gray-900"
-                        >{{ clientReview.user.firstName }}
-                        {{ clientReview.user.lastName }}</span
-                      >
-                      <span class="ml-2 text-sm text-gray-500">(Client)</span>
-                      <span class="ml-auto text-yellow-500">
-                        {{ displayRating(clientReview.score) }}
-                      </span>
-                    </div>
-                    <p class="text-gray-700">{{ clientReview.comment }}</p>
-                    <p class="text-sm text-gray-500 mt-2">
-                      {{ formatDate(clientReview.createdAt) }}
-                    </p>
-                  </div>
-                  <div v-else-if="isFreelancer" class="mb-6 text-gray-500">
-                    No review submitted by client yet.
-                  </div>
-
-                  <!-- Freelancer Review -->
-                  <div
-                    v-if="freelancerReview"
-                    class="p-4 border border-gray-200 rounded-lg"
-                  >
-                    <div class="flex items-center mb-2">
-                      <span class="font-medium text-gray-900"
-                        >{{ freelancerReview.user.firstName }}
-                        {{ freelancerReview.user.lastName }}</span
-                      >
-                      <span class="ml-2 text-sm text-gray-500"
-                        >(Freelancer)</span
-                      >
-                      <span class="ml-auto text-yellow-500">
-                        {{ displayRating(freelancerReview.score) }}
-                      </span>
-                    </div>
-                    <p class="text-gray-700">{{ freelancerReview.comment }}</p>
-                    <p class="text-sm text-gray-500 mt-2">
-                      {{ formatDate(freelancerReview.createdAt) }}
-                    </p>
-                  </div>
-                  <div v-else-if="isClient" class="text-gray-500">
-                    No review submitted by freelancer yet.
-                  </div>
-                </div>
-              </div>
-
-              <!-- Review Modal -->
-              <ReviewModal
-                v-if="showReviewModal"
-                :jobId="contract?.job.jobId"
-                :userId="userId"
-                @close="showReviewModal = false"
-                @review-submitted="handleReviewSubmitted"
-              />
             </div>
           </div>
+          <div
+            v-if="contract?.status === 'COMPLETED'"
+            class="bg-white shadow overflow-hidden rounded-xl"
+          >
+            <div class="px-6 py-8 sm:px-8">
+              <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-medium text-gray-900">Reviews</h3>
+                <button
+                  v-if="!hasSubmittedReview && canSubmitReview"
+                  @click="showReviewModal = true"
+                  class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  Add Review
+                </button>
+              </div>
+
+              <!-- Client Review -->
+              <div
+                v-if="clientReview"
+                class="mb-6 p-4 border border-gray-200 rounded-lg"
+              >
+                <div class="flex items-center mb-2">
+                  <span class="font-medium text-gray-900"
+                    >{{ clientReview.user.firstName }}
+                    {{ clientReview.user.lastName }}</span
+                  >
+                  <span class="ml-2 text-sm text-gray-500">(Client)</span>
+                  <span class="ml-auto text-yellow-500">
+                    {{ displayRating(clientReview.score) }}
+                  </span>
+                </div>
+                <p class="text-gray-700">{{ clientReview.comment }}</p>
+                <p class="text-sm text-gray-500 mt-2">
+                  {{ formatDate(clientReview.createdAt) }}
+                </p>
+              </div>
+              <div v-else-if="isFreelancer" class="mb-6 text-gray-500">
+                No review submitted by client yet.
+              </div>
+
+              <!-- Freelancer Review -->
+              <div
+                v-if="freelancerReview"
+                class="p-4 border border-gray-200 rounded-lg"
+              >
+                <div class="flex items-center mb-2">
+                  <span class="font-medium text-gray-900"
+                    >{{ freelancerReview.user.firstName }}
+                    {{ freelancerReview.user.lastName }}</span
+                  >
+                  <span class="ml-2 text-sm text-gray-500">(Freelancer)</span>
+                  <span class="ml-auto text-yellow-500">
+                    {{ displayRating(freelancerReview.score) }}
+                  </span>
+                </div>
+                <p class="text-gray-700">{{ freelancerReview.comment }}</p>
+                <p class="text-sm text-gray-500 mt-2">
+                  {{ formatDate(freelancerReview.createdAt) }}
+                </p>
+              </div>
+              <div v-else-if="isClient" class="text-gray-500">
+                No review submitted by freelancer yet.
+              </div>
+            </div>
+          </div>
+
+          <!-- Review Modal -->
+          <ReviewModal
+            v-if="showReviewModal"
+            :jobId="contract?.job.jobId"
+            :userId="userId"
+            @close="showReviewModal = false"
+            @review-submitted="handleReviewSubmitted"
+          />
         </div>
       </div>
     </div>

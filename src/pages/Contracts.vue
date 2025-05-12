@@ -97,12 +97,12 @@
             v-if="filteredContracts.length"
             class="bg-white shadow overflow-hidden rounded-xl"
           >
-            <ul class="divide-y divide-gray-200">
+            <ul class="flex flex-col divide-y divide-black gap-6 mb-6">
               <li
                 v-for="contract in filteredContracts"
                 :key="contract.contractId"
               >
-                <div class="px-6 py-5 sm:px-6">
+                <div class="px-6 py-5 sm:px-6 mb-6">
                   <div
                     class="flex flex-col sm:flex-row sm:items-center sm:justify-between"
                   >
@@ -112,8 +112,10 @@
                         <span
                           class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium"
                           :class="{
-                            'bg-green-100 text-green-800': contract.status === 'ACTIVE',
-                            'bg-blue-100 text-blue-800': contract.status === 'COMPLETED',
+                            'bg-green-100 text-green-800':
+                              contract.status === 'ACTIVE',
+                            'bg-blue-100 text-blue-800':
+                              contract.status === 'COMPLETED',
                           }"
                         >
                           {{ contract.status }}

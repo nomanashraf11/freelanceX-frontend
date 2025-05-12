@@ -114,14 +114,9 @@ export default defineComponent({
     const submitReview = async () => {
       loading.value = true;
       try {
-        const response = await ratingStore.createRating(reviewData);
-        if (response?.status === 201) {
-          // Check for successful creation
-          emit("review-submitted"); // Notify parent of success
-          closeModal(); // Close the modal
-        }
-
-        closeModal();
+        await ratingStore.createRating(reviewData);
+        emit("review-submitted"); // Notify parent of success
+        closeModal(); // Close the modal
       } catch (err) {
         console.error("Failed to submit review:", err);
       } finally {
