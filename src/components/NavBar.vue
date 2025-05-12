@@ -99,7 +99,7 @@
             </router-link>
             <router-link
               v-if="userStore.user?.role === 'CLIENT'"
-              to="/contracts"
+              to="/jobs"
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
             >
               Jobs

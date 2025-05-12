@@ -4,9 +4,9 @@
       <div class="max-w-7xl mx-auto">
         <!-- Page Header -->
         <div class="mb-8 mt-20">
-          <h1 class="text-3xl font-bold text-gray-900">My Contracts</h1>
+          <h1 class="text-3xl font-bold text-gray-900">My Jobs</h1>
           <p class="mt-2 text-lg text-gray-600">
-            Manage your active contracts and review past work
+            Manage your posted jobs and track their progress
           </p>
         </div>
 
@@ -32,21 +32,21 @@
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             ></path>
           </svg>
-          <p class="mt-2 text-gray-600">Loading contracts...</p>
+          <p class="mt-2 text-gray-600">Loading jobs...</p>
         </div>
 
         <!-- Error State -->
         <div v-else-if="error" class="text-center py-8">
           <p class="text-red-600">{{ error }}</p>
           <button
-            @click="fetchContracts"
+            @click="fetchJobs"
             class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
           >
             Retry
           </button>
         </div>
 
-        <!-- Contracts Content -->
+        <!-- Jobs Content -->
         <div v-else>
           <div
             class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
@@ -71,7 +71,7 @@
                 v-model="searchQuery"
                 type="text"
                 class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                placeholder="Search contracts..."
+                placeholder="Search jobs..."
               />
             </div>
             <div class="flex space-x-3">
@@ -80,9 +80,9 @@
                 class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-lg"
               >
                 <option value="">All Status</option>
-                <option value="ACTIVE">Active</option>
-                <option value="COMPLETED">Completed</option>
-                <option value="ENDED">Ended</option>
+                <option value="OPEN">Open</option>
+                <option value="CLOSED">Closed</option>
+                <option value="IN_PROGRESS">In Progress</option>
               </select>
               <button
                 class="px-4 py-2 border border-gray-300 rounded-lg bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -92,15 +92,15 @@
             </div>
           </div>
 
-          <!-- Contracts List -->
+          <!-- Jobs List -->
           <div
-            v-if="filteredContracts.length"
+            v-if="filteredJobs.length"
             class="bg-white shadow-lg rounded-xl overflow-hidden"
           >
             <ul class="space-y-6 p-6">
               <li
-                v-for="contract in filteredContracts"
-                :key="contract.contractId"
+                v-for="job in filteredJobs"
+                :key="job.jobId"
                 class="p-6 rounded-lg border border-gray-200 hover:border-indigo-300 transition-all duration-200 hover:shadow-md"
               >
                 <div class="flex flex-col space-y-4">
@@ -115,68 +115,74 @@
                           class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold leading-4"
                           :class="{
                             'bg-green-100 text-green-800':
-                              contract.status === 'ACTIVE',
+                              job.status === 'OPEN',
                             'bg-blue-100 text-blue-800':
-                              contract.status === 'COMPLETED',
-                            'bg-gray-100 text-gray-800': ![
-                              'ACTIVE',
-                              'COMPLETED',
-                            ].includes(contract.status),
+                              job.status === 'IN_PROGRESS',
+                            'bg-gray-100 text-gray-800':
+                              job.status === 'CLOSED',
                           }"
                         >
-                          {{ contract.status }}
+                          {{ job.status }}
                         </span>
                       </div>
                       <div>
                         <h2 class="text-lg font-semibold text-gray-900">
-                          {{ contract.job.title }}
+                          {{ job.title }}
                         </h2>
                         <p class="text-sm text-gray-500 mt-1">
-                          Started {{ formatDate(contract.createdAt) }}
+                          Posted {{ formatDate(job.createdAt) }}
                         </p>
                       </div>
                     </div>
 
-                    <!-- Action Button -->
-                    <router-link
-                      :to="`/contract/${contract.contractId}`"
-                      class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-indigo-50 hover:border-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all"
-                    >
-                      View Details
-                      <svg
-                        class="w-4 h-4 ml-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                    <!-- Action Buttons -->
+                    <div class="flex space-x-3">
+                      <button
+                        v-if="job.status === 'OPEN'"
+                        @click="prepareUpdateJob(job)"
+                        class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-indigo-50 hover:border-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all"
                       >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </router-link>
+                        Update
+                      </button>
+                      <router-link
+                        :to="`/job/${job.jobId}`"
+                        class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-indigo-50 hover:border-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all"
+                      >
+                        View Details
+                        <svg
+                          class="w-4 h-4 ml-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </router-link>
+                    </div>
                   </div>
 
                   <!-- Divider -->
                   <div class="border-t border-gray-100"></div>
 
-                  <!-- Financial Info -->
+                  <!-- Job Info -->
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
                       <h3
                         class="text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
-                        Contract Value
+                        Budget
                       </h3>
                       <p class="text-2xl font-bold text-indigo-600">
-                        ${{ contract.bid.amount.toFixed(2) }}
+                        ${{ job.budget.toFixed(2) }}
                       </p>
                       <p class="text-sm text-gray-500">
-                        <span class="font-medium">Job Budget:</span> ${{
-                          contract.job.budget.toFixed(2)
-                        }}
+                        <span class="font-medium">Location:</span>
+                        {{ job.location }}
                       </p>
                     </div>
 
@@ -184,10 +190,10 @@
                       <h3
                         class="text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
-                        Terms
+                        Description
                       </h3>
-                      <p class="text-sm text-gray-700">
-                        {{ contract.terms || "Standard contract terms apply" }}
+                      <p class="text-sm text-gray-700 line-clamp-3">
+                        {{ job.description }}
                       </p>
                     </div>
                   </div>
@@ -211,19 +217,16 @@
               />
             </svg>
             <h3 class="mt-2 text-lg font-medium text-gray-900">
-              No contracts found
+              No jobs found
             </h3>
             <p class="mt-1 text-sm text-gray-500">
-              You don't have any active contracts at this time.
+              You don't have any posted jobs at this time.
             </p>
-          </div>
-          <div v-else class="text-center py-8">
-            <p class="text-gray-600">No contracts found.</p>
           </div>
 
           <!-- Pagination -->
           <div
-            v-if="filteredContracts.length"
+            v-if="filteredJobs.length"
             class="bg-white px-6 py-3 flex items-center justify-between border-t border-gray-200"
           >
             <div class="flex-1 flex justify-between sm:hidden">
@@ -247,13 +250,11 @@
                 <p class="text-sm text-gray-700">
                   Showing <span class="font-medium">1</span> to
                   <span class="font-medium">{{
-                    Math.min(10, filteredContracts.length)
+                    Math.min(10, filteredJobs.length)
                   }}</span>
                   of
-                  <span class="font-medium">{{
-                    filteredContracts.length
-                  }}</span>
-                  contracts
+                  <span class="font-medium">{{ filteredJobs.length }}</span>
+                  jobs
                 </p>
               </div>
               <div>
@@ -330,56 +331,47 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, computed, ref } from "vue";
-import { useContractsStore } from "../store/contract";
+import { useJobsStore } from "../store/job";
 import { useUserStore } from "../store/user";
 import DefaultLayout from "../layouts/DefaultLayout.vue";
 
 export default defineComponent({
-  name: "Contracts",
+  name: "Jobs",
   components: { DefaultLayout },
   setup() {
-    const contractsStore = useContractsStore();
+    const jobsStore = useJobsStore();
     const userStore = useUserStore();
 
     const searchQuery = ref("");
     const statusFilter = ref("");
 
-    const userRole = computed(() => userStore.user?.role || "");
-    const userId = computed(() => userStore.user?.userId || "");
-
-    const fetchContracts = async () => {
-      if (!userId.value || !userRole.value) return;
+    const fetchJobs = async () => {
+      if (!userStore.user?.userId) return;
 
       try {
-        if (userRole.value === "CLIENT") {
-          await contractsStore.fetchContractByClient(userId.value);
-        } else if (userRole.value === "FREELANCER") {
-          await contractsStore.fetchContractByFreelancer(userId.value);
-        }
+        await jobsStore.fetchJobsByClient(userStore.user.userId);
       } catch (err) {
-        console.error("Failed to fetch contracts:", err);
+        console.error("Failed to fetch jobs:", err);
       }
     };
 
-    const filteredContracts = computed(() => {
-      let contracts = contractsStore.contracts;
+    const filteredJobs = computed(() => {
+      let jobs = jobsStore.clientJobs;
 
       if (searchQuery.value) {
         const query = searchQuery.value.toLowerCase();
-        contracts = contracts.filter(
-          (contract) =>
-            contract.job.title.toLowerCase().includes(query) ||
-            contract.contractId.toLowerCase().includes(query)
+        jobs = jobs.filter(
+          (job) =>
+            job.title.toLowerCase().includes(query) ||
+            job.jobId.toLowerCase().includes(query)
         );
       }
 
       if (statusFilter.value) {
-        contracts = contracts.filter(
-          (contract) => contract.status === statusFilter.value
-        );
+        jobs = jobs.filter((job) => job.status === statusFilter.value);
       }
 
-      return contracts;
+      return jobs;
     });
 
     const formatDate = (dateString: string) => {
@@ -391,20 +383,25 @@ export default defineComponent({
       return new Date(dateString).toLocaleDateString(undefined, options);
     };
 
+    const prepareUpdateJob = (job: any) => {
+      // This will be implemented when we have the update route
+      console.log("Preparing to update job:", job);
+    };
+
     onMounted(() => {
-      fetchContracts();
+      fetchJobs();
     });
 
     return {
-      contracts: contractsStore.contracts,
-      filteredContracts,
-      loading: computed(() => contractsStore.loading),
-      error: computed(() => contractsStore.error),
-      userRole,
+      jobs: jobsStore.clientJobs,
+      filteredJobs,
+      loading: computed(() => jobsStore.loading),
+      error: computed(() => jobsStore.error),
       formatDate,
       searchQuery,
       statusFilter,
-      fetchContracts,
+      fetchJobs,
+      prepareUpdateJob,
     };
   },
 });

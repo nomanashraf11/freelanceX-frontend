@@ -6,6 +6,7 @@ export const useJobsStore = defineStore("jobs", {
   state: () => ({
     jobs: [] as Job[],
     job: null as Job | null,
+    clientJobs: [] as Job[],
   }),
   actions: {
     async fetchJobs() {
@@ -30,6 +31,16 @@ export const useJobsStore = defineStore("jobs", {
       try {
         await postAPI("/job/client", job);
       } catch (error) {
+        throw error;
+      }
+    },
+    async fetchJobsByClient(clientId: string) {
+      try {
+        const response = await getAPI<Job[]>(`/job/client/${clientId}`);
+        this.clientJobs = response.data;
+        return response.data;
+      } catch (error) {
+        this.clientJobs = [];
         throw error;
       }
     },
