@@ -89,7 +89,7 @@
             <div class="grid gap-8 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
               <!-- Bigger job cards -->
               <div
-                v-for="job in jobsStore.jobs"
+                v-for="job in openJobs"
                 :key="job.jobId"
                 class="w-full flex flex-col bg-white rounded-xl border border-gray-200 hover:border-indigo-300 overflow-hidden transition-all duration-300 hover:shadow-lg"
               >
@@ -544,6 +544,9 @@ const submitJob = async () => {
     formLoading.value = false;
   }
 };
+const openJobs = computed(() => {
+  return jobsStore.jobs.filter((job) => job.status === "OPEN");
+});
 </script>
 
 <style scoped>
