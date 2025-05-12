@@ -139,7 +139,7 @@
                     <div class="flex space-x-3">
                       <button
                         v-if="job.status === 'OPEN'"
-                        @click="prepareUpdateJob(job)"
+                        @click="openUpdateModal(job)"
                         class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-indigo-50 hover:border-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all"
                       >
                         Update
@@ -165,162 +165,85 @@
                       </router-link>
                     </div>
                   </div>
-
-                  <!-- Divider -->
-                  <div class="border-t border-gray-100"></div>
-
-                  <!-- Job Info -->
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="space-y-2">
-                      <h3
-                        class="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Budget
-                      </h3>
-                      <p class="text-2xl font-bold text-indigo-600">
-                        ${{ job.budget.toFixed(2) }}
-                      </p>
-                      <p class="text-sm text-gray-500">
-                        <span class="font-medium">Location:</span>
-                        {{ job.location }}
-                      </p>
-                    </div>
-
-                    <div class="space-y-2">
-                      <h3
-                        class="text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Description
-                      </h3>
-                      <p class="text-sm text-gray-700 line-clamp-3">
-                        {{ job.description }}
-                      </p>
-                    </div>
-                  </div>
                 </div>
               </li>
             </ul>
           </div>
 
-          <div v-else class="bg-white rounded-xl shadow-sm p-8 text-center">
-            <svg
-              class="mx-auto h-12 w-12 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="1.5"
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
-            <h3 class="mt-2 text-lg font-medium text-gray-900">
-              No jobs found
-            </h3>
-            <p class="mt-1 text-sm text-gray-500">
-              You don't have any posted jobs at this time.
-            </p>
-          </div>
-
-          <!-- Pagination -->
+          <!-- Job Update Modal -->
           <div
-            v-if="filteredJobs.length"
-            class="bg-white px-6 py-3 flex items-center justify-between border-t border-gray-200"
+            v-if="updateModalOpen"
+            class="fixed inset-0 bg-gray-900 bg-opacity-60 flex items-center justify-center z-50 transition-opacity duration-300"
+            @click.self="updateModalOpen = false"
           >
-            <div class="flex-1 flex justify-between sm:hidden">
-              <a
-                href="#"
-                class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-              >
-                Previous
-              </a>
-              <a
-                href="#"
-                class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-              >
-                Next
-              </a>
-            </div>
             <div
-              class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"
+              class="bg-white rounded-2xl p-8 max-w-lg w-full shadow-2xl transform transition-all scale-100"
             >
-              <div>
-                <p class="text-sm text-gray-700">
-                  Showing <span class="font-medium">1</span> to
-                  <span class="font-medium">{{
-                    Math.min(10, filteredJobs.length)
-                  }}</span>
-                  of
-                  <span class="font-medium">{{ filteredJobs.length }}</span>
-                  jobs
-                </p>
+              <h2 class="text-2xl font-bold text-gray-900 mb-6">Update Job</h2>
+              <div
+                v-if="updateError"
+                class="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6"
+                role="alert"
+              >
+                {{ updateError }}
               </div>
-              <div>
-                <nav
-                  class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
-                  aria-label="Pagination"
-                >
-                  <a
-                    href="#"
-                    class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              <form @submit.prevent="submitUpdate" class="space-y-6">
+                <div>
+                  <label
+                    for="updateTitle"
+                    class="block text-sm font-medium text-gray-700"
+                    >Job Title</label
                   >
-                    <span class="sr-only">Previous</span>
-                    <svg
-                      class="h-5 w-5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </a>
-                  <a
-                    href="#"
-                    aria-current="page"
-                    class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+                  <input
+                    id="updateTitle"
+                    v-model="updatedJob.title"
+                    required
+                    type="text"
+                    class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all duration-300"
+                    placeholder="Enter job title"
+                  />
+                </div>
+                <div>
+                  <label
+                    for="updateDescription"
+                    class="block text-sm font-medium text-gray-700"
+                    >Job Description</label
                   >
-                    1
-                  </a>
-                  <a
-                    href="#"
-                    class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+                  <textarea
+                    id="updateDescription"
+                    v-model="updatedJob.description"
+                    required
+                    rows="5"
+                    class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all duration-300"
+                    placeholder="Describe the job..."
+                  ></textarea>
+                </div>
+                <div class="relative">
+                  <label
+                    for="updateBudget"
+                    class="block text-sm font-medium text-gray-700"
+                    >Budget</label
                   >
-                    2
-                  </a>
-                  <a
-                    href="#"
-                    class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
+                  <span class="absolute left-4 top-10 text-gray-400">$</span>
+                  <input
+                    id="updateBudget"
+                    v-model.number="updatedJob.budget"
+                    required
+                    type="number"
+                    step="0.01"
+                    class="mt-1 block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-all duration-300"
+                    placeholder="Enter budget"
+                  />
+                </div>
+                <div class="flex justify-end">
+                  <button
+                    type="submit"
+                    class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
-                    3
-                  </a>
-                  <a
-                    href="#"
-                    class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-                  >
-                    <span class="sr-only">Next</span>
-                    <svg
-                      class="h-5 w-5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                  </a>
-                </nav>
-              </div>
+                    Save Changes
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -334,6 +257,7 @@ import { defineComponent, onMounted, computed, ref } from "vue";
 import { useJobsStore } from "../store/job";
 import { useUserStore } from "../store/user";
 import DefaultLayout from "../layouts/DefaultLayout.vue";
+import type { JobUpdate } from "../types/job";
 
 export default defineComponent({
   name: "Jobs",
@@ -344,6 +268,17 @@ export default defineComponent({
 
     const searchQuery = ref("");
     const statusFilter = ref("");
+    const updateModalOpen = ref(false);
+    const updating = ref(false);
+    const updateError = ref<string | null>(null);
+    const selectedJob = ref<any>(null);
+    const updatedJob = ref<JobUpdate>({
+      title: "",
+      description: "",
+      budget: 0,
+      location: "",
+      status: "OPEN",
+    });
 
     const fetchJobs = async () => {
       if (!userStore.user?.userId) return;
@@ -383,9 +318,40 @@ export default defineComponent({
       return new Date(dateString).toLocaleDateString(undefined, options);
     };
 
-    const prepareUpdateJob = (job: any) => {
-      // This will be implemented when we have the update route
-      console.log("Preparing to update job:", job);
+    const openUpdateModal = (job: any) => {
+      selectedJob.value = job;
+      updatedJob.value = {
+        title: job.title,
+        description: job.description,
+        budget: job.budget,
+        location: job.location,
+        status: job.status,
+      };
+      updateModalOpen.value = true;
+      updateError.value = null;
+    };
+
+    const submitUpdate = async () => {
+      if (!selectedJob.value || !userStore.user?.userId) return;
+
+      updating.value = true;
+      updateError.value = null;
+
+      try {
+        await jobsStore.updateJob(
+          selectedJob.value.jobId,
+          userStore.user.userId,
+          updatedJob.value
+        );
+        updateModalOpen.value = false;
+        await fetchJobs(); // Refresh the jobs list
+      } catch (err: any) {
+        updateError.value =
+          err.response?.data?.message || "Failed to update job";
+        console.error("Failed to update job:", err);
+      } finally {
+        updating.value = false;
+      }
     };
 
     onMounted(() => {
@@ -401,7 +367,12 @@ export default defineComponent({
       searchQuery,
       statusFilter,
       fetchJobs,
-      prepareUpdateJob,
+      updateModalOpen,
+      updating,
+      updateError,
+      updatedJob,
+      openUpdateModal,
+      submitUpdate,
     };
   },
 });

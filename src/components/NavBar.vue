@@ -19,6 +19,10 @@
       <!-- Spacer -->
       <div class="flex-grow"></div>
       <!-- Notification and Profile Buttons -->
+      <p class="pr-4">
+        {{ userStore?.user?.profile?.firstName }}
+        {{ userStore?.user?.profile?.lastName }}
+      </p>
       <div class="flex items-center space-x-4">
         <!-- Notification Button -->
         <button
@@ -41,6 +45,7 @@
           </svg>
         </button>
         <!-- Profile Dropdown -->
+
         <div class="relative">
           <button
             @click="showMenu = !showMenu"
