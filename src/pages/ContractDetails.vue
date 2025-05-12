@@ -1,6 +1,6 @@
 <template>
   <default-layout>
-    <div class="min-h-screen bg-gray-50 py-8 mt-20 px-4 sm:px-6 lg:px-8">
+    <div class="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
       <div class="max-w-7xl mx-auto">
         <!-- Page Header -->
         <div class="mb-8">
@@ -306,10 +306,9 @@
             </div>
           </div>
 
-          <!-- Review Modal -->
           <ReviewModal
             v-if="showReviewModal"
-            :jobId="contract?.job.jobId"
+            :jobId="contract?.jobId"
             :userId="userId"
             @close="showReviewModal = false"
             @review-submitted="handleReviewSubmitted"
@@ -425,7 +424,7 @@ export default defineComponent({
     const fetchReviews = async () => {
       if (contract.value?.job.jobId) {
         await ratingStore.fetchRatingsByJobId(contract.value.job.jobId);
-        reviews.value = ratingStore?.rating;
+        reviews.value = ratingStore?.ratings;
       }
     };
 

@@ -18,8 +18,8 @@ export interface Job {
   client: Client;
   status: "OPEN" | "CLOSED";
   budget: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface JobCreate {

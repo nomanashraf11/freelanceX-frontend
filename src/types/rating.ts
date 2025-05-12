@@ -19,7 +19,7 @@ export interface Rating {
   userId: string;
   user: User;
   job: Job;
-  score: string;
+  score: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE";
   comment: string;
   createdAt: string;
   updatedAt: string;

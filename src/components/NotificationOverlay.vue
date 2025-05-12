@@ -68,9 +68,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { watch } from "vue";
 import { storeToRefs } from "pinia";
-import { useNotificationStore } from "../store/notification"; // adjust the path as needed
+import { useNotificationStore } from "../store/notification";
 import { useUserStore } from "../store/user";
 const userStore = useUserStore();
 const dialog = defineModel();

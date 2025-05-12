@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { getAPI } from "../utils/api";
+import type { Notification } from "../types/notification";
 
 export const useNotificationStore = defineStore("notifications", {
   state: () => ({

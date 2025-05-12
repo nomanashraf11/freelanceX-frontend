@@ -7,6 +7,15 @@ interface Contract {
   contractId: string;
   bidId: string;
   jobId: string;
+  status: "ACTIVE" | "COMPLETED";
+}
+
+interface Job {
+  jobId: string;
+  title: string;
+  budget: number;
+  clientId: string;
+  status: "OPEN" | "CLOSED";
 }
 
 export interface Bid {
@@ -15,10 +24,11 @@ export interface Bid {
   freelancerId: string;
   amount: number;
   proposal: string;
+  job: Job;
   freelancer: Freelancer;
   contract: Contract;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface BidCreate {

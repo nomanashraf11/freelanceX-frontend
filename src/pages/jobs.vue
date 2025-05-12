@@ -3,7 +3,7 @@
     <div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div class="max-w-7xl mx-auto">
         <!-- Page Header -->
-        <div class="mb-8 mt-20">
+        <div class="mb-8">
           <h1 class="text-3xl font-bold text-gray-900">My Jobs</h1>
           <p class="mt-2 text-lg text-gray-600">
             Manage your posted jobs and track their progress
@@ -116,9 +116,7 @@
                           :class="{
                             'bg-green-100 text-green-800':
                               job.status === 'OPEN',
-                            'bg-blue-100 text-blue-800':
-                              job.status === 'IN_PROGRESS',
-                            'bg-gray-100 text-gray-800':
+                            'bg-gray-100 text-red-800':
                               job.status === 'CLOSED',
                           }"
                         >

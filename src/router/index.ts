@@ -9,7 +9,7 @@ import FreelancerBids from "../pages/FreelancerBids.vue";
 import Contracts from "../pages/Contracts.vue";
 import { useUserStore } from "../store/user";
 import ContractDetails from "../pages/ContractDetails.vue";
-import Jobs from "../pages/jobs.vue";
+import Jobs from "../pages/Jobs.vue";
 
 const routes = [
   { path: "/", component: Dashboard, meta: { requiresAuth: true } },
@@ -80,10 +80,7 @@ router.beforeEach(async (to, from, next) => {
       });
     }
   } else {
-    if (
-      userStore.isAuthenticated &&
-      (to.path === "/login" || to.path === "/register")
-    ) {
+    if (userStore.isAuthenticated && (to.path === "/login" || to.path === "/register")) {
       next("/");
       return;
     }

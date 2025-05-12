@@ -1,28 +1,18 @@
 <template>
   <header class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
-    <nav
-      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between"
-    >
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
       <!-- App Title / Dashboard Link -->
       <div class="flex">
         <button
           @click="goToDashboard"
           class="text-xl font-bold text-gray-900 hover:text-indigo-600 transition duration-300"
         >
-          <img
-            src="../assets/logo.svg"
-            alt="FreelanceX Logo"
-            class="h-[60px] w-auto"
-          />
+          <img src="../assets/logo.svg" alt="FreelanceX Logo" class="h-[60px] w-auto" />
         </button>
       </div>
       <!-- Spacer -->
       <div class="flex-grow"></div>
       <!-- Notification and Profile Buttons -->
-      <p class="pr-4">
-        {{ userStore?.user?.profile?.firstName }}
-        {{ userStore?.user?.profile?.lastName }}
-      </p>
       <div class="flex items-center space-x-4">
         <!-- Notification Button -->
         <button
@@ -45,7 +35,6 @@
           </svg>
         </button>
         <!-- Profile Dropdown -->
-
         <div class="relative">
           <button
             @click="showMenu = !showMenu"
@@ -69,52 +58,63 @@
           <!-- Dropdown Menu -->
           <div
             v-if="showMenu"
-            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 transform transition-all duration-300"
+            class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl py-4 z-50 transform transition-all duration-300 origin-top-right"
+            :class="{ 'scale-95 opacity-0': !showMenu, 'scale-100 opacity-100': showMenu }"
             @click="showMenu = false"
           >
-            <router-link
-              to="/profile"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
-            >
-              Profile
-            </router-link>
-            <router-link
-              v-if="userStore.user?.role === 'ADMIN'"
-              to="/admin/users"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
-            >
-              All Users
-            </router-link>
-            <router-link
-              v-if="userStore.user?.role === 'FREELANCER'"
-              to="/bids"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
-            >
-              Bids
-            </router-link>
-            <router-link
-              v-if="
-                userStore.user?.role === 'FREELANCER' ||
-                userStore.user?.role === 'CLIENT'
-              "
-              to="/contracts"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
-            >
-              Contracts
-            </router-link>
-            <router-link
-              v-if="userStore.user?.role === 'CLIENT'"
-              to="/jobs"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
-            >
-              Jobs
-            </router-link>
-            <button
-              @click="logout"
-              class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
-            >
-              Logout
-            </button>
+            <!-- Username Header -->
+            <div class="px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-indigo-50 to-blue-50">
+              <p class="text-sm font-semibold text-gray-900">
+                {{ firstName || "User" }} {{ lastName || "" }}
+              </p>
+              <p class="text-xs text-gray-500 capitalize">{{ role || "N/A" }}</p>
+            </div>
+            <!-- Menu Items -->
+            <div class="py-2">
+              <router-link
+                to="/profile"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
+              >
+                Your Profile
+              </router-link>
+              <router-link
+                v-if="role === 'ADMIN'"
+                to="/admin/users"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
+              >
+                All Users
+              </router-link>
+              <router-link
+                v-if="role === 'FREELANCER'"
+                to="/bids"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
+              >
+                Your Bids
+              </router-link>
+              <router-link
+                v-if="role === 'FREELANCER' || role === 'CLIENT'"
+                to="/contracts"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
+              >
+                Your Contracts
+              </router-link>
+              <router-link
+                v-if="role === 'CLIENT'"
+                to="/jobs"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
+              >
+                Your Jobs
+              </router-link>
+            </div>
+            <!-- Logout Button -->
+            <div class="border-t border-gray-200 pt-2">
+              <button
+                @click="logout"
+                class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 transition duration-200 font-medium"
+              >
+                Logout
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -125,7 +125,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "../store/user";
 import NotificationOverlay from "./NotificationOverlay.vue";
@@ -134,6 +134,11 @@ const router = useRouter();
 const userStore = useUserStore();
 const showNotifications = ref(false);
 const showMenu = ref(false);
+
+// Local variables for user data
+const firstName = computed(() => userStore.user?.profile?.firstName || "");
+const lastName = computed(() => userStore.user?.profile?.lastName || "");
+const role = computed(() => userStore.user?.role.toString() || "");
 
 const goToDashboard = () => {
   showMenu.value = false;

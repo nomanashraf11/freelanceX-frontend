@@ -10,6 +10,7 @@ export interface User {
   email: string;
   profile: Profile;
   role: "CLIENT" | "FREELANCER" | "ADMIN";
+  disabled: boolean;
 }
 
 export interface RegisterUser {
