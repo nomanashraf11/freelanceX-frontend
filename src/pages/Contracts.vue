@@ -3,9 +3,11 @@
     <div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div class="max-w-7xl mx-auto">
         <!-- Page Header -->
-        <div class="mb-8">
+        <div class="mb-8 mt-20">
           <h1 class="text-3xl font-bold text-gray-900">My Contracts</h1>
-          <p class="mt-2 text-lg text-gray-600">Manage your active contracts and review past work</p>
+          <p class="mt-2 text-lg text-gray-600">
+            Manage your active contracts and review past work
+          </p>
         </div>
 
         <!-- Loading State -->
@@ -16,7 +18,14 @@
             fill="none"
             viewBox="0 0 24 24"
           >
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
             <path
               class="opacity-75"
               fill="currentColor"
@@ -39,10 +48,18 @@
 
         <!-- Contracts Content -->
         <div v-else>
-          <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div
+            class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+          >
             <div class="relative w-full sm:w-64">
-              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+              <div
+                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+              >
+                <svg
+                  class="h-5 w-5 text-gray-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
                   <path
                     fill-rule="evenodd"
                     d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
@@ -76,19 +93,29 @@
           </div>
 
           <!-- Contracts List -->
-          <div v-if="filteredContracts.length" class="bg-white shadow overflow-hidden rounded-xl">
+          <div
+            v-if="filteredContracts.length"
+            class="bg-white shadow overflow-hidden rounded-xl"
+          >
             <ul class="divide-y divide-gray-200">
-              <li v-for="contract in filteredContracts" :key="contract.contractId">
+              <li
+                v-for="contract in filteredContracts"
+                :key="contract.contractId"
+              >
                 <div class="px-6 py-5 sm:px-6">
-                  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                  <div
+                    class="flex flex-col sm:flex-row sm:items-center sm:justify-between"
+                  >
                     <!-- Contract Info -->
                     <div class="flex-1 min-w-0">
                       <div class="flex items-center">
                         <span
                           class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium"
                           :class="{
-                            'bg-green-100 text-green-800': contract.status === 'ACTIVE',
-                            'bg-blue-100 text-blue-800': contract.status === 'INACTIVE',
+                            'bg-green-100 text-green-800':
+                              contract.status === 'ACTIVE',
+                            'bg-blue-100 text-blue-800':
+                              contract.status === 'INACTIVE',
                           }"
                         >
                           {{ contract.status }}
@@ -97,12 +124,16 @@
                           Started {{ formatDate(contract.createdAt) }}
                         </span>
                       </div>
-                      <h2 class="mt-2 text-xl font-semibold text-gray-900 truncate">
+                      <h2
+                        class="mt-2 text-xl font-semibold text-gray-900 truncate"
+                      >
                         {{ contract.job.title }}
                       </h2>
                       <p class="mt-1 text-gray-500">
                         Contract amount:
-                        <span class="font-medium text-gray-900">${{ contract.bid.amount.toFixed(2) }}</span>
+                        <span class="font-medium text-gray-900"
+                          >${{ contract.bid.amount.toFixed(2) }}</span
+                        >
                       </p>
                     </div>
 
@@ -122,13 +153,21 @@
                   <div class="mt-4 pt-4 border-t border-gray-200">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
-                        <h3 class="text-sm font-medium text-gray-500">Job Budget</h3>
-                        <p class="mt-1 text-sm text-gray-900">${{ contract.job.budget.toFixed(2) }}</p>
+                        <h3 class="text-sm font-medium text-gray-500">
+                          Job Budget
+                        </h3>
+                        <p class="mt-1 text-sm text-gray-900">
+                          ${{ contract.job.budget.toFixed(2) }}
+                        </p>
                       </div>
                       <div>
-                        <h3 class="text-sm font-medium text-gray-500">Contract Terms</h3>
+                        <h3 class="text-sm font-medium text-gray-500">
+                          Contract Terms
+                        </h3>
                         <p class="mt-1 text-sm text-gray-900 line-clamp-2">
-                          {{ contract.terms || "Standard contract terms apply" }}
+                          {{
+                            contract.terms || "Standard contract terms apply"
+                          }}
                         </p>
                       </div>
                     </div>
@@ -160,12 +199,20 @@
                 Next
               </a>
             </div>
-            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+            <div
+              class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"
+            >
               <div>
                 <p class="text-sm text-gray-700">
                   Showing <span class="font-medium">1</span> to
-                  <span class="font-medium">{{ Math.min(10, filteredContracts.length) }}</span> of
-                  <span class="font-medium">{{ filteredContracts.length }}</span> contracts
+                  <span class="font-medium">{{
+                    Math.min(10, filteredContracts.length)
+                  }}</span>
+                  of
+                  <span class="font-medium">{{
+                    filteredContracts.length
+                  }}</span>
+                  contracts
                 </p>
               </div>
               <div>
@@ -286,7 +333,9 @@ export default defineComponent({
       }
 
       if (statusFilter.value) {
-        contracts = contracts.filter((contract) => contract.status === statusFilter.value);
+        contracts = contracts.filter(
+          (contract) => contract.status === statusFilter.value
+        );
       }
 
       return contracts;
@@ -316,6 +365,6 @@ export default defineComponent({
       statusFilter,
       fetchContracts,
     };
-  }
+  },
 });
 </script>

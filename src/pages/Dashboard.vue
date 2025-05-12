@@ -5,7 +5,7 @@
     >
       <div class="max-w-7xl mx-auto">
         <!-- Header Section -->
-        <div class="flex justify-between items-center mb-12">
+        <div class="flex justify-between items-center mb-12 mt-16">
           <h1 class="text-4xl font-bold text-gray-900 tracking-tight">
             Jobs You Might Like
           </h1>
