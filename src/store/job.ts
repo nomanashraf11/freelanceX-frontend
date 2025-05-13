@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import type { Job, JobCreate, JobUpdate } from "../types/job";
-import { getAPI, postAPI, putAPI } from "../utils/api";
+import { deleteAPI, getAPI, postAPI, putAPI } from "../utils/api";
 
 export const useJobsStore = defineStore("jobs", {
   state: () => ({
@@ -82,6 +82,19 @@ export const useJobsStore = defineStore("jobs", {
           this.clientJobs[index] = response.data;
         }
         return response.data;
+      } catch (err: any) {
+        this.error = err.response?.data?.message || "Failed to update job";
+        throw err;
+      } finally {
+        this.loading = false;
+      }
+    },
+    async deleteJob(jobId: string, clientId: string | undefined) {
+      this.loading = true;
+      this.error = null;
+      try {
+        await deleteAPI<Job>(`/job/${jobId}/client/${clientId}`);
+        return "Job deleted successfully";
       } catch (err: any) {
         this.error = err.response?.data?.message || "Failed to update job";
         throw err;

@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { AxiosResponse } from "axios";
 
-const BASE_URL = "http://localhost:8080/api";
+const BASE_URL = "http://172.17.157.202:8080/api";
 
 const api = axios.create({
   baseURL: BASE_URL,

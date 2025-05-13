@@ -1,13 +1,19 @@
 <template>
   <header class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
-    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+    <nav
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between"
+    >
       <!-- App Title / Dashboard Link -->
       <div class="flex">
         <button
           @click="goToDashboard"
           class="text-xl font-bold text-gray-900 hover:text-indigo-600 transition duration-300"
         >
-          <img src="../assets/logo.svg" alt="FreelanceX Logo" class="h-[60px] w-auto" />
+          <img
+            src="../assets/logo.svg"
+            alt="FreelanceX Logo"
+            class="h-[60px] w-auto"
+          />
         </button>
       </div>
       <!-- Spacer -->
@@ -59,15 +65,22 @@
           <div
             v-if="showMenu"
             class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl py-4 z-50 transform transition-all duration-300 origin-top-right"
-            :class="{ 'scale-95 opacity-0': !showMenu, 'scale-100 opacity-100': showMenu }"
+            :class="{
+              'scale-95 opacity-0': !showMenu,
+              'scale-100 opacity-100': showMenu,
+            }"
             @click="showMenu = false"
           >
             <!-- Username Header -->
-            <div class="px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-indigo-50 to-blue-50">
+            <div
+              class="px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-indigo-50 to-blue-50"
+            >
               <p class="text-sm font-semibold text-gray-900">
                 {{ firstName || "User" }} {{ lastName || "" }}
               </p>
-              <p class="text-xs text-gray-500 capitalize">{{ role || "N/A" }}</p>
+              <p class="text-xs text-gray-500 capitalize">
+                {{ role || "N/A" }}
+              </p>
             </div>
             <!-- Menu Items -->
             <div class="py-2">
@@ -75,7 +88,7 @@
                 to="/profile"
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
               >
-                Your Profile
+                Profile
               </router-link>
               <router-link
                 v-if="role === 'ADMIN'"
@@ -89,21 +102,21 @@
                 to="/bids"
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
               >
-                Your Bids
+                Bids
               </router-link>
               <router-link
                 v-if="role === 'FREELANCER' || role === 'CLIENT'"
                 to="/contracts"
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
               >
-                Your Contracts
+                Contracts
               </router-link>
               <router-link
                 v-if="role === 'CLIENT'"
                 to="/jobs"
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-200"
               >
-                Your Jobs
+                Jobs
               </router-link>
             </div>
             <!-- Logout Button -->

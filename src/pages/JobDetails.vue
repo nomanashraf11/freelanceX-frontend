@@ -107,6 +107,8 @@
                   required
                   type="number"
                   step="0.01"
+                  min="0.01"
+                  max="100000"
                   class="block w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-300"
                   placeholder="Enter your bid amount"
                 />

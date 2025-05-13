@@ -116,8 +116,7 @@
                           :class="{
                             'bg-green-100 text-green-800':
                               job.status === 'OPEN',
-                            'bg-gray-100 text-red-800':
-                              job.status === 'CLOSED',
+                            'bg-gray-100 text-red-800': job.status === 'CLOSED',
                           }"
                         >
                           {{ job.status }}
@@ -141,6 +140,13 @@
                         class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-indigo-50 hover:border-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all"
                       >
                         Update
+                      </button>
+                      <button
+                        v-if="job.status === 'OPEN'"
+                        @click="deleteJob(job)"
+                        class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-red-200 hover:border-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all"
+                      >
+                        Delete
                       </button>
                       <router-link
                         :to="`/job/${job.jobId}`"
@@ -256,6 +262,7 @@ import { useJobsStore } from "../store/job";
 import { useUserStore } from "../store/user";
 import DefaultLayout from "../layouts/DefaultLayout.vue";
 import type { JobUpdate } from "../types/job";
+import { useToast } from "vue-toastification";
 
 export default defineComponent({
   name: "Jobs",
@@ -277,7 +284,7 @@ export default defineComponent({
       location: "",
       status: "OPEN",
     });
-
+    const toast = useToast();
     const fetchJobs = async () => {
       if (!userStore.user?.userId) return;
 
@@ -329,6 +336,17 @@ export default defineComponent({
       updateError.value = null;
     };
 
+    const deleteJob = async (job: any) => {
+      try {
+        console.log(job);
+        await jobsStore.deleteJob(job.jobId, userStore.user?.userId);
+        fetchJobs();
+        toast.success("Job deleted successfully");
+      } catch (error) {
+        toast.error(error?.message || "Error deleting the Job");
+      }
+    };
+
     const submitUpdate = async () => {
       if (!selectedJob.value || !userStore.user?.userId) return;
 
@@ -368,6 +386,7 @@ export default defineComponent({
       updateModalOpen,
       updating,
       updateError,
+      deleteJob,
       updatedJob,
       openUpdateModal,
       submitUpdate,
