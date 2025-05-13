@@ -73,8 +73,8 @@ src/
 
 - NOMAN
 - ANJISH
-- MISHU
-- Suliman
+- MISU
+- SULAIMAN
 
 ---
 
