@@ -176,11 +176,14 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 import { useUserStore } from "../store/user";
 import type { RegisterUser } from "../types/user";
 
 const router = useRouter();
 const userStore = useUserStore();
+const toast = useToast();
+
 const loading = ref(false);
 const error = ref<string | null>(null);
 const submitted = ref(false);
@@ -206,7 +209,6 @@ const rules = {
     value.length <= 1000 || "Maximum 1000 characters",
 };
 
-// Compute form validity based on all input validations
 const valid = computed(() => {
   return (
     rules.required(email.value) === true &&
@@ -224,8 +226,10 @@ const valid = computed(() => {
 const register = async () => {
   submitted.value = true;
   if (!valid.value) return;
+
   loading.value = true;
   error.value = null;
+
   try {
     const user: RegisterUser = {
       firstName: firstName.value,
@@ -235,12 +239,21 @@ const register = async () => {
       role: role.value,
       bio: bio.value,
     };
+
     await userStore.register(user);
-    router.push("/login");
+
+    toast.success("Registration successful! Redirecting to login...", {
+      timeout: 2000,
+    });
+
+    setTimeout(() => {
+      router.push("/login");
+    }, 2000);
   } catch (err) {
     error.value =
       "Registration failed. Please check your details and try again.";
     console.error("Registration failed:", err);
+    toast.error("Registration failed.");
   } finally {
     loading.value = false;
   }
