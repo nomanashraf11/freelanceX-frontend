@@ -57,8 +57,8 @@ src/
 - **Vue 3**
 - **TypeScript**
 - **Vite**
-- **Pinia** (if used)
-- **Vue Router** (if used)
+- **Pinia**
+- **Vue Router** 
 
 ---
 
