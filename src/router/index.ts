@@ -10,12 +10,14 @@ import Contracts from "../pages/Contracts.vue";
 import { useUserStore } from "../store/user";
 import ContractDetails from "../pages/ContractDetails.vue";
 import Jobs from "../pages/Jobs.vue";
+import EditProfile from "../pages/EditProfile.vue";
 
 const routes = [
   { path: "/", component: Dashboard, meta: { requiresAuth: true } },
   { path: "/login", component: Login },
   { path: "/register", component: Register },
   { path: "/profile", component: Profile, meta: { requiresAuth: true } },
+  { path : "/edit-profile", component: EditProfile, meta: { requiresAuth: true } },
   { path: "/job/:id", component: JobDetails, meta: { requiresAuth: true } },
   {
     path: "/admin/users",
