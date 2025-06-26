@@ -7,6 +7,7 @@ import "./assets/main.css";
 
 const app = createApp(App);
 
+// All the middleware initiated 
 app.use(createPinia());
 app.use(router);
 app.use(Toast);
